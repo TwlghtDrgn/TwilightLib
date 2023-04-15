@@ -1,4 +1,4 @@
-package net.twlghtdrgn.twilightlib.Exception;
+package net.twlghtdrgn.twilightlib.exception;
 
 /**
  * Thrown if config cannot be loaded by some reason

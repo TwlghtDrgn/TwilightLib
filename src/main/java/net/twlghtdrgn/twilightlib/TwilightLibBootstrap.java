@@ -7,7 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class TwilightLibBootstrap implements PluginBootstrap {
     @Override
-    public void bootstrap(@NotNull PluginProviderContext context) {}
+    public void bootstrap(@NotNull PluginProviderContext context) {
+        // Currently does nothing
+    }
 
     @Override
     public @NotNull JavaPlugin createPlugin(@NotNull PluginProviderContext context) {

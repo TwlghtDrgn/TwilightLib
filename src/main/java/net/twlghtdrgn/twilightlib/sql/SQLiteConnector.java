@@ -1,4 +1,4 @@
-package net.twlghtdrgn.twilightlib.SQL;
+package net.twlghtdrgn.twilightlib.sql;
 
 import net.twlghtdrgn.twilightlib.TwilightLib;
 import org.jetbrains.annotations.Nullable;
@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLiteConnector implements SQL{
-    private static Connection conn;
+    private Connection conn;
 
     @Override
     public void load() throws SQLException {

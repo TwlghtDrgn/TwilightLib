@@ -1,6 +1,6 @@
-package net.twlghtdrgn.twilightlib.SQL;
+package net.twlghtdrgn.twilightlib.sql;
 
-import net.twlghtdrgn.twilightlib.Exception.ConfigLoadException;
+import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 
 import java.io.IOException;
 import java.sql.Connection;

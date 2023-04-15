@@ -1,8 +1,8 @@
-package net.twlghtdrgn.twilightlib.SQL;
+package net.twlghtdrgn.twilightlib.sql;
 
 import com.zaxxer.hikari.HikariDataSource;
-import net.twlghtdrgn.twilightlib.Config.Config;
-import net.twlghtdrgn.twilightlib.Exception.ConfigLoadException;
+import net.twlghtdrgn.twilightlib.config.Config;
+import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import net.twlghtdrgn.twilightlib.TwilightLib;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
@@ -12,12 +12,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class HikariConnector implements SQL {
-    private static HikariDataSource dataSource;
+    private HikariDataSource dataSource;
 
     @Override
     public void load() throws ConfigLoadException, IOException {
         FileConfiguration sql = Config.load("sql.yml");
-        String host, port, database, user, password;
+        String host;
+        String port;
+        String database;
+        String user;
+        String password;
 
         host = sql.getString("database.hostname");
         port = sql.getString("database.port");

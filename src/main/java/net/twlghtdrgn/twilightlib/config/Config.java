@@ -1,7 +1,6 @@
-package net.twlghtdrgn.twilightlib.Config;
+package net.twlghtdrgn.twilightlib.config;
 
-import com.google.common.base.Charsets;
-import net.twlghtdrgn.twilightlib.Exception.ConfigLoadException;
+import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import net.twlghtdrgn.twilightlib.TwilightLib;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,8 +10,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class Config {
+    private Config() {}
     /**
      * Loads new config files for later usage
      * @param config Config file name
@@ -33,7 +34,7 @@ public class Config {
         final InputStream is = plugin.getResource(config);
         if (is == null) throw new ConfigLoadException(config);
 
-        cfg.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(is, Charsets.UTF_8)));
+        cfg.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(is, StandardCharsets.UTF_8)));
         cfg.save(file);
 
         return cfg;

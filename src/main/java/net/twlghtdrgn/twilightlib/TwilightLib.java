@@ -24,17 +24,13 @@ public final class TwilightLib extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getLogger().info(String.format("""
-                
-                || TwlghtDrgn's TwilghtLib
-                ||
-                || Version: %s
-                || Server version: %s
-                || GitHub: %s
-                || Discord support (#plugin-support): https://discord.gg/PddWSCDBhP""",
-                getPluginMeta().getVersion(),
-                getServer().getVersion(),
-                getPluginMeta().getWebsite()));
+        getLogger().info("\n" +
+                "|| TwlghtDrgn's TwilghtLib\n" +
+                "||\n" +
+                "|| Version: " + getPluginMeta().getVersion() + "\n" +
+                "|| Server version: " + getServer().getVersion() + "\n" +
+                "|| GitHub: " + getPluginMeta().getWebsite() + "\n" +
+                "|| Discord support (#plugin-support): https://discord.gg/PddWSCDBhP");
     }
 
     @Override

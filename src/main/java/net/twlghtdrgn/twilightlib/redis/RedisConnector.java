@@ -1,7 +1,7 @@
-package net.twlghtdrgn.twilightlib.Redis;
+package net.twlghtdrgn.twilightlib.redis;
 
-import net.twlghtdrgn.twilightlib.Config.Config;
-import net.twlghtdrgn.twilightlib.Exception.ConfigLoadException;
+import net.twlghtdrgn.twilightlib.config.Config;
+import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import net.twlghtdrgn.twilightlib.TwilightLib;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
@@ -13,11 +13,15 @@ import java.io.IOException;
 import java.time.Duration;
 
 public class RedisConnector {
+    private RedisConnector() {}
+
     private static JedisPool jedisPool;
 
     public static void load() throws ConfigLoadException, IOException {
         FileConfiguration redis = Config.load("redis.yaml");
-        String host, user, password;
+        String host;
+        String user;
+        String password;
         int port;
 
         host = redis.getString("redis.hostname");
