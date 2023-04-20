@@ -1,7 +1,7 @@
 package net.twlghtdrgn.twilightlib.sql;
 
 import com.zaxxer.hikari.HikariDataSource;
-import net.twlghtdrgn.twilightlib.config.Config;
+import net.twlghtdrgn.twilightlib.config.ConfigLoader;
 import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import net.twlghtdrgn.twilightlib.TwilightLib;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,12 +11,18 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * A MySql (MariaDB) connector using HikariCP
+ */
 public class HikariConnector implements SQL {
     private HikariDataSource dataSource;
 
+    /**
+     * Allows to load a MariaDB database
+     */
     @Override
     public void load() throws ConfigLoadException, IOException {
-        FileConfiguration sql = Config.load("sql.yml");
+        FileConfiguration sql = ConfigLoader.legacy("sql.yml");
         String host;
         String port;
         String database;
@@ -44,6 +50,10 @@ public class HikariConnector implements SQL {
         TwilightLib.getPlugin().getLogger().info("Loaded MariaDB driver");
     }
 
+    /**
+     * Get a connection to DB
+     * @return database connection
+     */
     @Override
     @Nullable
     public Connection getConnection() throws SQLException {

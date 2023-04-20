@@ -6,7 +6,7 @@
 
     <groupId>net.twlghtdrgn</groupId>
     <artifactId>TwilightLib</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.15</version>
     <packaging>jar</packaging>
 
     <name>TwilightLib</name>
@@ -41,6 +41,12 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>META-INF/*</excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -126,6 +132,11 @@
             <artifactId>jedis</artifactId>
             <version>4.3.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spongepowered</groupId>
+            <artifactId>configurate-yaml</artifactId>
+            <version>4.1.2</version>
         </dependency>
     </dependencies>
 
