@@ -1,6 +1,6 @@
 package net.twlghtdrgn.twilightlib.redis;
 
-import net.twlghtdrgn.twilightlib.config.Config;
+import net.twlghtdrgn.twilightlib.config.ConfigLoader;
 import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import net.twlghtdrgn.twilightlib.TwilightLib;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,7 +18,7 @@ public class RedisConnector {
     private static JedisPool jedisPool;
 
     public static void load() throws ConfigLoadException, IOException {
-        FileConfiguration redis = Config.load("redis.yaml");
+        FileConfiguration redis = ConfigLoader.legacy("redis.yaml");
         String host;
         String user;
         String password;
