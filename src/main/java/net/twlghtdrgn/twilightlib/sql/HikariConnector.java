@@ -15,13 +15,9 @@ import java.sql.SQLException;
  * A MySql (MariaDB) connector using HikariCP
  */
 public class HikariConnector implements SQL {
-    private HikariDataSource dataSource;
+    private final HikariDataSource dataSource;
 
-    /**
-     * Allows to load a MariaDB database
-     */
-    @Override
-    public void load() throws ConfigLoadException, IOException {
+    public HikariConnector() throws ConfigLoadException, IOException {
         FileConfiguration sql = ConfigLoader.legacy("sql.yml");
         String host;
         String port;

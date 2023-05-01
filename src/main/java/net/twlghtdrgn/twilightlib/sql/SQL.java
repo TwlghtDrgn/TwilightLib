@@ -1,12 +1,10 @@
 package net.twlghtdrgn.twilightlib.sql;
 
-import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
-
-import java.io.IOException;
+import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface SQL {
-    void load() throws SQLException, ConfigLoadException, IOException;
+    @Nullable
     Connection getConnection() throws SQLException;
 }

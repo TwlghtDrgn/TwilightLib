@@ -12,12 +12,12 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.io.IOException;
 import java.time.Duration;
 
+/**
+ * A Redis messaging connector using Jedis
+ */
 public class RedisConnector {
-    private RedisConnector() {}
-
-    private static JedisPool jedisPool;
-
-    public static void load() throws ConfigLoadException, IOException {
+    private final JedisPool jedisPool;
+    public RedisConnector() throws ConfigLoadException, IOException {
         FileConfiguration redis = ConfigLoader.legacy("redis.yaml");
         String host;
         String user;
@@ -46,8 +46,12 @@ public class RedisConnector {
         TwilightLib.getPlugin().getLogger().info("Loaded Redis driver");
     }
 
+    /**
+     * Get a connection to Redis
+     * @return database connection
+     */
     @Nullable
-    public static Jedis getResource() {
+    public Jedis getResource() {
         return jedisPool.getResource();
     }
 }
