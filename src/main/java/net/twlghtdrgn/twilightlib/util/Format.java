@@ -7,8 +7,6 @@ import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
-import java.util.regex.Pattern;
-
 /**
  * Formatters used in my plugins
  * @author TwlghtDrgn
@@ -28,7 +26,7 @@ public class Format {
      */
     public static Component parse(String s) {
         if (s == null) return null;
-        if (Pattern.matches("&[0-9A-Fa-fK-Ok-oRr]", s)) {
+        if (s.matches(".*&[0-9A-Fa-fK-Ok-oRr].*")) {
             return lcs.deserializeOrNull(s)
                     .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
         } else return mm.deserializeOrNull(s)
