@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 /**
@@ -15,7 +14,6 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 public class Format {
     private Format() {}
     private static final MiniMessage mm = MiniMessage.miniMessage();
-    private static final LegacyComponentSerializer lcs = LegacyComponentSerializer.legacyAmpersand();
     private static final PlainTextComponentSerializer ptcs = PlainTextComponentSerializer.plainText();
     private static final GsonComponentSerializer gcs = GsonComponentSerializer.gson();
 
@@ -25,11 +23,7 @@ public class Format {
      * @return a component
      */
     public static Component parse(String s) {
-        if (s == null) return null;
-        if (s.matches("&[0-9A-Fa-fK-Ok-oRr]")) {
-            return lcs.deserializeOrNull(s)
-                    .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
-        } else return mm.deserializeOrNull(s)
+        return mm.deserializeOrNull(s)
                 .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
