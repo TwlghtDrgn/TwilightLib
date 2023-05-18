@@ -6,9 +6,12 @@ public final class TwilightLib extends JavaPlugin {
     private static JavaPlugin plugin;
 
     /**
+     *
      * Allows you to get your own plugin. Useful only inside my library
      * @return {@link JavaPlugin} for internal classes.
+     * @deprecated in favor of {@link TwilightLibImpl}
      */
+    @Deprecated(forRemoval = true)
     public static JavaPlugin getPlugin() {
         return plugin;
     }
@@ -16,7 +19,9 @@ public final class TwilightLib extends JavaPlugin {
     /**
      * Set your plugin instance to use library
      * @param plugin your plugin
+     * @deprecated in favor of {@link TwilightLibImpl}
      */
+    @Deprecated(forRemoval = true)
     public static void setPlugin(final JavaPlugin plugin) {
         TwilightLib.plugin = plugin;
     }

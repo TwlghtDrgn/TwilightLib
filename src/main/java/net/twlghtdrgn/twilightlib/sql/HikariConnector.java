@@ -1,9 +1,9 @@
 package net.twlghtdrgn.twilightlib.sql;
 
 import com.zaxxer.hikari.HikariDataSource;
+import net.twlghtdrgn.twilightlib.TwilightLibImpl;
 import net.twlghtdrgn.twilightlib.config.ConfigLoader;
 import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
-import net.twlghtdrgn.twilightlib.TwilightLib;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +43,7 @@ public class HikariConnector implements SQL {
         dataSource.addDataSourceProperty("useUnicode",true);
         dataSource.addDataSourceProperty("characterEncoding","utf8");
 
-        TwilightLib.getPlugin().getLogger().info("Loaded MariaDB driver");
+        TwilightLibImpl.getPlugin().getLogger().info("Loaded MariaDB driver");
     }
 
     /**

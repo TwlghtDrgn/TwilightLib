@@ -1,6 +1,6 @@
 package net.twlghtdrgn.twilightlib.config;
 
-import net.twlghtdrgn.twilightlib.TwilightLib;
+import net.twlghtdrgn.twilightlib.TwilightLibImpl;
 import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,7 +27,7 @@ public class ConfigLoader {
      * @throws ConfigLoadException if unable to load a resource
      */
     public static FileConfiguration legacy(final String config) throws ConfigLoadException, IOException {
-        final JavaPlugin plugin = TwilightLib.getPlugin();
+        final JavaPlugin plugin = TwilightLibImpl.getPlugin();
         File dir = plugin.getDataFolder();
         File file = new File(dir, config);
 
@@ -53,7 +53,7 @@ public class ConfigLoader {
      * @throws IOException if unable to save a file
      */
     public static ConfigurationNode load(final ConfigBuilder builder) throws IOException {
-        final JavaPlugin plugin = TwilightLib.getPlugin();
+        final JavaPlugin plugin = TwilightLibImpl.getPlugin();
         ConfigBuilder.Conf virtualNode = builder.createConfig();
         File dir = plugin.getDataFolder();
         File file = new File(dir,virtualNode.getName());

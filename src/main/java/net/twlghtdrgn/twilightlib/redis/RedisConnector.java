@@ -1,8 +1,8 @@
 package net.twlghtdrgn.twilightlib.redis;
 
+import net.twlghtdrgn.twilightlib.TwilightLibImpl;
 import net.twlghtdrgn.twilightlib.config.ConfigLoader;
 import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
-import net.twlghtdrgn.twilightlib.TwilightLib;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
 import redis.clients.jedis.Jedis;
@@ -43,7 +43,7 @@ public class RedisConnector {
         poolConfig.setBlockWhenExhausted(true);
 
         jedisPool = new JedisPool(poolConfig,host,port,user,password);
-        TwilightLib.getPlugin().getLogger().info("Loaded Redis driver");
+        TwilightLibImpl.getPlugin().getLogger().info("Loaded Redis driver");
     }
 
     /**

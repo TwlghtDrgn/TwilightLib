@@ -1,6 +1,6 @@
 package net.twlghtdrgn.twilightlib.sql;
 
-import net.twlghtdrgn.twilightlib.TwilightLib;
+import net.twlghtdrgn.twilightlib.TwilightLibImpl;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
  */
 public class SQLiteConnector implements SQL {
     public SQLiteConnector() {
-        TwilightLib.getPlugin().getLogger().info("Using SQLite driver, no load is required");
+        TwilightLibImpl.getPlugin().getLogger().info("Using SQLite driver, no load is required");
     }
 
     /**
@@ -22,6 +22,6 @@ public class SQLiteConnector implements SQL {
     @Override
     @Nullable
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:sqlite:" + TwilightLib.getPlugin().getDataFolder() + "/sqlite.db");
+        return DriverManager.getConnection("jdbc:sqlite:" + TwilightLibImpl.getPlugin().getDataFolder() + "/sqlite.db");
     }
 }
