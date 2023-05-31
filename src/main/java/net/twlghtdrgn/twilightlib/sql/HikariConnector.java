@@ -1,10 +1,10 @@
 package net.twlghtdrgn.twilightlib.sql;
 
 import com.zaxxer.hikari.HikariDataSource;
-import net.twlghtdrgn.twilightlib.TwilightLibImpl;
-import net.twlghtdrgn.twilightlib.config.ConfigLoader;
+import net.twlghtdrgn.twilightlib.TwilightPlugin;
 import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -14,11 +14,12 @@ import java.sql.SQLException;
 /**
  * A MySql (MariaDB) connector using HikariCP
  */
+@SuppressWarnings("unused")
 public class HikariConnector implements SQL {
     private final HikariDataSource dataSource;
 
-    public HikariConnector() throws ConfigLoadException, IOException {
-        FileConfiguration sql = ConfigLoader.legacy("sql.yml");
+    public HikariConnector(@NotNull TwilightPlugin plugin) throws ConfigLoadException, IOException {
+        FileConfiguration sql = plugin.getConfiguration().legacy("sql.yml");
         String host;
         String port;
         String database;
@@ -43,7 +44,7 @@ public class HikariConnector implements SQL {
         dataSource.addDataSourceProperty("useUnicode",true);
         dataSource.addDataSourceProperty("characterEncoding","utf8");
 
-        TwilightLibImpl.getPlugin().getLogger().info("Loaded MariaDB driver");
+        plugin.getLogger().info("Loaded MariaDB driver");
     }
 
     /**

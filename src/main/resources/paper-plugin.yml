@@ -6,5 +6,4 @@ prefix: TL
 authors: [TwlghtDrgn]
 description: A library for TwlghtDrgn's plugins
 website: https://github.com/TwlghtDrgn/TwilightLib
-bootstrapper: net.twlghtdrgn.twilightlib.TwilightLibBootstrap
 loader: net.twlghtdrgn.twilightlib.TwilightLibLoader

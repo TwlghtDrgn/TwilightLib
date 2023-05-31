@@ -1,10 +1,10 @@
 package net.twlghtdrgn.twilightlib.config;
 
-import net.twlghtdrgn.twilightlib.TwilightLibImpl;
+import net.twlghtdrgn.twilightlib.TwilightPlugin;
 import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
@@ -17,8 +17,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-public class ConfigLoader {
-    private ConfigLoader() {}
+/**
+ * Class that contains custom Bukkit and Sponge config loaders
+ */
+@SuppressWarnings("unused")
+public class Config {
+    private final TwilightPlugin plugin;
+    public Config(TwilightPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Legacy Bukkit API config loader
@@ -26,8 +33,7 @@ public class ConfigLoader {
      * @return {@link FileConfiguration}
      * @throws ConfigLoadException if unable to load a resource
      */
-    public static FileConfiguration legacy(final String config) throws ConfigLoadException, IOException {
-        final JavaPlugin plugin = TwilightLibImpl.getPlugin();
+    public FileConfiguration legacy(final String config) throws ConfigLoadException, IOException {
         File dir = plugin.getDataFolder();
         File file = new File(dir, config);
 
@@ -52,8 +58,7 @@ public class ConfigLoader {
      * @return {@link ConfigurationNode}
      * @throws IOException if unable to save a file
      */
-    public static ConfigurationNode load(final ConfigBuilder builder) throws IOException {
-        final JavaPlugin plugin = TwilightLibImpl.getPlugin();
+    public @NotNull ConfigurationNode load(final @NotNull ConfigBuilder builder) throws IOException {
         ConfigBuilder.Conf virtualNode = builder.createConfig();
         File dir = plugin.getDataFolder();
         File file = new File(dir,virtualNode.getName());

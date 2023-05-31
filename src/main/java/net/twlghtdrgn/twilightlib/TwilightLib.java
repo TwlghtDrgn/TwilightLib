@@ -1,45 +1,16 @@
 package net.twlghtdrgn.twilightlib;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
-public final class TwilightLib extends JavaPlugin {
-    private static JavaPlugin plugin;
-
-    /**
-     *
-     * Allows you to get your own plugin. Useful only inside my library
-     * @return {@link JavaPlugin} for internal classes.
-     * @deprecated in favor of {@link TwilightLibImpl}
-     */
-    @Deprecated(forRemoval = true)
-    public static JavaPlugin getPlugin() {
-        return plugin;
-    }
-
-    /**
-     * Set your plugin instance to use library
-     * @param plugin your plugin
-     * @deprecated in favor of {@link TwilightLibImpl}
-     */
-    @Deprecated(forRemoval = true)
-    public static void setPlugin(final JavaPlugin plugin) {
-        TwilightLib.plugin = plugin;
+/**
+ * Loads this library as a plugin
+ */
+public class TwilightLib extends TwilightPlugin {
+    @Override
+    protected void enable() {
+        // not needed
     }
 
     @Override
-    public void onEnable() {
-        // Plugin startup logic
-        getLogger().info("\n" +
-                "|| TwlghtDrgn's TwilghtLib\n" +
-                "||\n" +
-                "|| Version: " + getPluginMeta().getVersion() + "\n" +
-                "|| Server version: " + getServer().getVersion() + "\n" +
-                "|| GitHub: " + getPluginMeta().getWebsite() + "\n" +
-                "|| Discord support (#plugin-support): https://discord.gg/PddWSCDBhP");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    protected void disable() {
+        // also not needed
     }
 }

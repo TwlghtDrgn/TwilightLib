@@ -1,5 +1,7 @@
 package net.twlghtdrgn.twilightlib.config;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
@@ -10,6 +12,10 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Configuration builder class
+ */
+@SuppressWarnings("unused")
 public class ConfigBuilder {
     private String configName;
     private final List<Row> rows = new ArrayList<>();
@@ -31,7 +37,8 @@ public class ConfigBuilder {
     /**
      * Creates a new {@link ConfigBuilder} instance
      */
-    public static Builder newBuilder() {
+    @Contract(" -> new")
+    public static @NotNull Builder newBuilder() {
         return new ConfigBuilder().new Builder();
     }
 

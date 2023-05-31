@@ -1,9 +1,9 @@
 package net.twlghtdrgn.twilightlib.redis;
 
-import net.twlghtdrgn.twilightlib.TwilightLibImpl;
-import net.twlghtdrgn.twilightlib.config.ConfigLoader;
+import net.twlghtdrgn.twilightlib.TwilightPlugin;
 import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -15,10 +15,11 @@ import java.time.Duration;
 /**
  * A Redis messaging connector using Jedis
  */
+@SuppressWarnings("unused")
 public class RedisConnector {
     private final JedisPool jedisPool;
-    public RedisConnector() throws ConfigLoadException, IOException {
-        FileConfiguration redis = ConfigLoader.legacy("redis.yaml");
+    public RedisConnector(@NotNull TwilightPlugin plugin) throws ConfigLoadException, IOException {
+        FileConfiguration redis = plugin.getConfiguration().legacy("redis.yaml");
         String host;
         String user;
         String password;
@@ -43,7 +44,7 @@ public class RedisConnector {
         poolConfig.setBlockWhenExhausted(true);
 
         jedisPool = new JedisPool(poolConfig,host,port,user,password);
-        TwilightLibImpl.getPlugin().getLogger().info("Loaded Redis driver");
+        plugin.getLogger().info("Loaded Redis driver");
     }
 
     /**
