@@ -28,8 +28,6 @@ public abstract class TwilightPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info("\n" +
-                "|| Disabling " + getName() + " ver" + getPluginMeta().getVersion());
         disable();
     }
 
