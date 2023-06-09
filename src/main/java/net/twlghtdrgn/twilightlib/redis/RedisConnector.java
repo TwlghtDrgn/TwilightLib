@@ -1,9 +1,9 @@
 package net.twlghtdrgn.twilightlib.redis;
 
-import net.twlghtdrgn.twilightlib.config.ConfigLoader;
+import net.twlghtdrgn.twilightlib.TwilightPlugin;
 import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
-import net.twlghtdrgn.twilightlib.TwilightLib;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -12,13 +12,14 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.io.IOException;
 import java.time.Duration;
 
+/**
+ * A Redis messaging connector using Jedis
+ */
+@SuppressWarnings("unused")
 public class RedisConnector {
-    private RedisConnector() {}
-
-    private static JedisPool jedisPool;
-
-    public static void load() throws ConfigLoadException, IOException {
-        FileConfiguration redis = ConfigLoader.legacy("redis.yaml");
+    private final JedisPool jedisPool;
+    public RedisConnector(@NotNull TwilightPlugin plugin) throws ConfigLoadException, IOException {
+        FileConfiguration redis = plugin.getConfiguration().legacy("redis.yaml");
         String host;
         String user;
         String password;
@@ -43,11 +44,15 @@ public class RedisConnector {
         poolConfig.setBlockWhenExhausted(true);
 
         jedisPool = new JedisPool(poolConfig,host,port,user,password);
-        TwilightLib.getPlugin().getLogger().info("Loaded Redis driver");
+        plugin.getLogger().info("Loaded Redis driver");
     }
 
+    /**
+     * Get a connection to Redis
+     * @return database connection
+     */
     @Nullable
-    public static Jedis getResource() {
+    public Jedis getResource() {
         return jedisPool.getResource();
     }
 }
