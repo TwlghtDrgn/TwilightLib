@@ -6,7 +6,7 @@
 
     <groupId>net.twlghtdrgn</groupId>
     <artifactId>TwilightLib</artifactId>
-    <version>0.0.17.3-SNAPSHOT</version>
+    <version>0.0.18-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>TwilightLib</name>
@@ -130,7 +130,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>4.3.2</version>
+            <version>4.4.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

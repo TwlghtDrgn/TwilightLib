@@ -81,7 +81,7 @@ public class ConfigLoader {
     /**
      * A Sponge Configurate config loader, simplified
      * @param config {@link AbstractConfig}
-     * @return {@link Object} an object class that you should cast to {@link net.twlghtdrgn.twilightlib.config.AbstractConfig.Cfg}
+     * @return {@link Object} an object that should be cast as your config class
      * @throws IOException if unable to load or save a file
      */
     @Nullable
@@ -92,11 +92,10 @@ public class ConfigLoader {
                 .nodeStyle(NodeStyle.BLOCK)
                 .build();
 
-        ConfigurationNode node = loader.load();
+        CommentedConfigurationNode node = loader.load();
+        Object cfg = node.get(config.getConfigClass());
 
-        Object cfg = node.get(config.getConfigClass().getClass());
-
-        node.set(config.getConfigClass().getClass(), cfg);
+        node.set(config.getConfigClass(), cfg);
         loader.save(node);
         return cfg;
     }

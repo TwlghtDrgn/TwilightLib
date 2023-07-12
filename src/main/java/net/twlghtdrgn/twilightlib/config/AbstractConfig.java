@@ -1,28 +1,19 @@
 package net.twlghtdrgn.twilightlib.config;
 
 import lombok.Getter;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+
+import java.io.IOException;
 
 public abstract class AbstractConfig {
     @Getter
     private final String configName;
     @Getter
-    private final Object configClass;
+    private final Class<?> configClass;
 
-    @Getter
-    @Nullable
-    private static Cfg config;
-
-    protected AbstractConfig(String configName, Object configClass) {
+    protected AbstractConfig(String configName, Class<?> configClass) {
         this.configName = configName;
         this.configClass = configClass;
     }
 
-    public abstract void reload();
-
-    @ConfigSerializable
-    public abstract class Cfg {
-
-    }
+    public abstract void reload() throws IOException;
 }
