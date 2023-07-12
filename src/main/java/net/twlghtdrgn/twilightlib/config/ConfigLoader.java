@@ -1,10 +1,10 @@
 package net.twlghtdrgn.twilightlib.config;
 
 import net.twlghtdrgn.twilightlib.TwilightPlugin;
-import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
@@ -16,14 +16,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Class that contains custom Bukkit and Sponge config loaders
  */
 @SuppressWarnings("unused")
-public class Config {
+public class ConfigLoader {
     private final TwilightPlugin plugin;
-    public Config(TwilightPlugin plugin) {
+    public ConfigLoader(TwilightPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -31,9 +33,9 @@ public class Config {
      * Legacy Bukkit API config loader
      * @param config Config file name
      * @return {@link FileConfiguration}
-     * @throws ConfigLoadException if unable to load a resource
+     * @throws IOException if unable to load a resource
      */
-    public FileConfiguration legacy(final String config) throws ConfigLoadException, IOException {
+    public FileConfiguration load(final String config) throws IOException {
         File dir = plugin.getDataFolder();
         File file = new File(dir, config);
 
@@ -44,7 +46,7 @@ public class Config {
         cfg = YamlConfiguration.loadConfiguration(file);
 
         final InputStream is = plugin.getResource(config);
-        if (is == null) throw new ConfigLoadException(config);
+        if (is == null) throw new IOException("Unable to load config " + config + " from JAR");
 
         cfg.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(is, StandardCharsets.UTF_8)));
         cfg.save(file);
@@ -53,10 +55,10 @@ public class Config {
     }
 
     /**
-     * Modern Sponge Configurate config loader
+     * An ultra-simple version of modern Sponge Configurate config loader
      * @param builder {@link ConfigBuilder} instance that contains default config and config name
      * @return {@link ConfigurationNode}
-     * @throws IOException if unable to save a file
+     * @throws IOException if unable to load or save a file
      */
     public @NotNull ConfigurationNode load(final @NotNull ConfigBuilder builder) throws IOException {
         ConfigBuilder.Conf virtualNode = builder.createConfig();
@@ -74,5 +76,28 @@ public class Config {
         loader.save(node);
 
         return node;
+    }
+
+    /**
+     * A Sponge Configurate config loader, simplified
+     * @param config {@link AbstractConfig}
+     * @return {@link Object} an object class that you should cast to {@link net.twlghtdrgn.twilightlib.config.AbstractConfig.Cfg}
+     * @throws IOException if unable to load or save a file
+     */
+    @Nullable
+    public Object load(final @NotNull AbstractConfig config) throws IOException {
+        Path path = Paths.get(plugin.getDataFolder().toString(), config.getConfigName());
+        YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(path)
+                .nodeStyle(NodeStyle.BLOCK)
+                .build();
+
+        ConfigurationNode node = loader.load();
+
+        Object cfg = node.get(config.getConfigClass().getClass());
+
+        node.set(config.getConfigClass().getClass(), cfg);
+        loader.save(node);
+        return cfg;
     }
 }

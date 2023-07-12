@@ -1,7 +1,7 @@
 package net.twlghtdrgn.twilightlib;
 
 import lombok.Getter;
-import net.twlghtdrgn.twilightlib.config.Config;
+import net.twlghtdrgn.twilightlib.config.ConfigLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -10,12 +10,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public abstract class TwilightPlugin extends JavaPlugin {
     private static TwilightPlugin plugin;
-    private Config configuration;
+    private ConfigLoader configLoader;
 
     @Override
     public void onEnable() {
         plugin = this;
-        configuration = new Config(this);
+        configLoader = new ConfigLoader(this);
         getLogger().info("\n" +
                 "|| " + getName() + "\n" +
                 "||\n" +

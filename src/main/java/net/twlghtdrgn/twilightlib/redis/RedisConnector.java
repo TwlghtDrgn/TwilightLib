@@ -1,7 +1,6 @@
 package net.twlghtdrgn.twilightlib.redis;
 
 import net.twlghtdrgn.twilightlib.TwilightPlugin;
-import net.twlghtdrgn.twilightlib.exception.ConfigLoadException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,8 +17,8 @@ import java.time.Duration;
 @SuppressWarnings("unused")
 public class RedisConnector {
     private final JedisPool jedisPool;
-    public RedisConnector(@NotNull TwilightPlugin plugin) throws ConfigLoadException, IOException {
-        FileConfiguration redis = plugin.getConfiguration().legacy("redis.yaml");
+    public RedisConnector(@NotNull TwilightPlugin plugin) throws IOException {
+        FileConfiguration redis = plugin.getConfigLoader().load("redis.yaml");
         String host;
         String user;
         String password;
