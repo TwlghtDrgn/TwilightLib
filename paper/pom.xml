@@ -106,17 +106,6 @@
         </resources>
     </build>
 
-    <repositories>
-        <repository>
-            <id>papermc-repo</id>
-            <url>https://repo.papermc.io/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
@@ -130,17 +119,4 @@
             <version>0.0.19-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>twlghtdrgn-releases</id>
-            <name>Release repository</name>
-            <url>https://maven.twlghtdrgn.net/repository/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>twlghtdrgn-snapshots</id>
-            <name>Snapshot repository</name>
-            <url>https://maven.twlghtdrgn.net/repository/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
