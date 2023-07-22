@@ -1,8 +1,6 @@
 package net.twlghtdrgn.twilightlib.config;
 
-import net.twlghtdrgn.twilightlib.TwilightPlugin;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import net.twlghtdrgn.twilightlib.ILibrary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -11,11 +9,7 @@ import org.spongepowered.configurate.loader.ConfigurationLoader;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -24,34 +18,9 @@ import java.nio.file.Paths;
  */
 @SuppressWarnings("unused")
 public class ConfigLoader {
-    private final TwilightPlugin plugin;
-    public ConfigLoader(TwilightPlugin plugin) {
-        this.plugin = plugin;
-    }
-
-    /**
-     * Legacy Bukkit API config loader
-     * @param config Config file name
-     * @return {@link FileConfiguration}
-     * @throws IOException if unable to load a resource
-     */
-    public FileConfiguration load(final String config) throws IOException {
-        File dir = plugin.getDataFolder();
-        File file = new File(dir, config);
-
-        if (!file.exists()) plugin.saveResource(config,false);
-
-        FileConfiguration cfg;
-
-        cfg = YamlConfiguration.loadConfiguration(file);
-
-        final InputStream is = plugin.getResource(config);
-        if (is == null) throw new IOException("Unable to load config " + config + " from JAR");
-
-        cfg.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(is, StandardCharsets.UTF_8)));
-        cfg.save(file);
-
-        return cfg;
+    private final ILibrary library;
+    public ConfigLoader(ILibrary library) {
+        this.library = library;
     }
 
     /**
@@ -62,11 +31,10 @@ public class ConfigLoader {
      */
     public @NotNull ConfigurationNode load(final @NotNull ConfigBuilder builder) throws IOException {
         ConfigBuilder.Conf virtualNode = builder.createConfig();
-        File dir = plugin.getDataFolder();
-        File file = new File(dir,virtualNode.getName());
+        Path path = Paths.get(library.getPath().toString(), virtualNode.getName());
 
         ConfigurationLoader<CommentedConfigurationNode> loader = YamlConfigurationLoader.builder()
-                .path(file.toPath())
+                .path(path)
                 .nodeStyle(NodeStyle.BLOCK)
                 .build();
 
@@ -86,7 +54,7 @@ public class ConfigLoader {
      */
     @Nullable
     public Object load(final @NotNull AbstractConfig config) throws IOException {
-        Path path = Paths.get(plugin.getDataFolder().toString(), config.getConfigName());
+        Path path = Paths.get(library.getPath().toString(), config.getConfigName());
         YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
                 .path(path)
                 .nodeStyle(NodeStyle.BLOCK)

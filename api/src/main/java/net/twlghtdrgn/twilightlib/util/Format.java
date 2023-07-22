@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Formatters used in my plugins
@@ -13,36 +14,35 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
  */
 public class Format {
     private Format() {}
-    private static final MiniMessage mm = MiniMessage.miniMessage();
-    private static final PlainTextComponentSerializer ptcs = PlainTextComponentSerializer.plainText();
-    private static final GsonComponentSerializer gcs = GsonComponentSerializer.gson();
 
     /**
      * Converts text to a component
-     * @param s a string to convert
+     * @param string a string to convert
      * @return a component
      */
-    public static Component parse(String s) {
-        return mm.deserializeOrNull(s)
+    @NotNull
+    public static Component parse(String string) {
+        return MiniMessage.miniMessage().deserializeOr(string, Component.text("Error"))
                 .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
     /**
      * Converts component to a text
-     * @param c a component to convert
-     * @return a string
+     * @param component a component to convert
+     * @return a regular string without any formatting
      */
-    public static String parse(Component c) {
-        return ptcs.serializeOrNull(c);
+    public static String parse(Component component) {
+        return PlainTextComponentSerializer.plainText().serializeOr(component,"Error");
     }
 
     /**
      * Converts string to a Minecraft JSON string
-     * @param s a string to convert
-     * @return a component in form of JSON
+     * @param string a string to convert
+     * @return a JSON-component
      */
-    public static Component gson(String s) {
-        return gcs.deserializeOrNull(s)
+    @NotNull
+    public static Component gson(String string) {
+        return GsonComponentSerializer.gson().deserializeOr(string, Component.text("Error"))
                 .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
