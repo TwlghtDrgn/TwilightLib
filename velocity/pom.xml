@@ -113,9 +113,6 @@
                                     <shadedPattern>shaded.mariadb.jdbc</shadedPattern>
                                 </relocation>
                             </relocations>
-                            <outputDirectory>${project.parent.basedir}/target</outputDirectory>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>all</shadedClassifierName>
                         </configuration>
                     </execution>
                 </executions>
