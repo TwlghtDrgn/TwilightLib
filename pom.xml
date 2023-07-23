@@ -6,7 +6,7 @@
 
     <groupId>net.twlghtdrgn</groupId>
     <artifactId>TwilightLib</artifactId>
-    <version>0.0.19a-SNAPSHOT</version>
+    <version>0.0.19bb-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>TwilightLib</name>

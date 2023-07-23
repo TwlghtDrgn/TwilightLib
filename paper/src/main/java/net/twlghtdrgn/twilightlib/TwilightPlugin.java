@@ -3,6 +3,7 @@ package net.twlghtdrgn.twilightlib;
 import lombok.Getter;
 import net.twlghtdrgn.twilightlib.config.ConfigLoader;
 import net.twlghtdrgn.twilightlib.util.PluginInfo;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.nio.file.Path;
@@ -13,7 +14,7 @@ import java.nio.file.Path;
 @Getter
 public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     @Getter
-    public static TwilightPlugin plugin;
+    private static TwilightPlugin plugin;
     private ConfigLoader configLoader;
     private PluginInfo pluginInfo;
 
@@ -32,7 +33,14 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
         configLoader = new ConfigLoader(this);
 
         getLogger().info(pluginInfo.getStartupMessage());
-        enable();
+
+        try {
+            enable();
+        } catch (Exception e) {
+            getLogger().severe(getName() + " cannot be loaded properly and will be disabled. You can find a stacktrace below");
+            e.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
     }
 
     @Override
@@ -43,7 +51,7 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     /**
      * Execute code on startup
      */
-    protected abstract void enable();
+    protected abstract void enable() throws Exception;
 
     /**
      * Execute code on shutdown
