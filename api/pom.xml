@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.twlghtdrgn</groupId>
         <artifactId>TwilightLib</artifactId>
-        <version>0.0.19bb-SNAPSHOT</version>
+        <version>0.0.19c-SNAPSHOT</version>
     </parent>
 
     <name>TwilightLib-API</name>

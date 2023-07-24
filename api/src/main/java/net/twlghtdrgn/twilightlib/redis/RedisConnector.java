@@ -23,6 +23,12 @@ public class RedisConnector {
     public RedisConnector(@NotNull ILibrary library) {
         this.library = library;
         RedisConfig config = new RedisConfig("redis.yml", null);
+        try {
+            config.reload();
+        } catch (IOException e) {
+            throw new NullPointerException("Unable to load redis config");
+        }
+
         String host = config.config.hostname;
         String user = config.config.user;
         String password = config.config.password;

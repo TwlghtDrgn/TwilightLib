@@ -23,6 +23,11 @@ public class HikariConnector implements SQL {
     public HikariConnector(@NotNull ILibrary library) {
         this.library = library;
         SQLConfig config = new SQLConfig("database.yml",null);
+        try {
+            config.reload();
+        } catch (IOException e) {
+            throw new NullPointerException("Unable to load db config");
+        }
 
         String host = config.config.hostname;
         String port = config.config.port;

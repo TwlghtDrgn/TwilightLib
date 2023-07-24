@@ -1,5 +1,7 @@
 package net.twlghtdrgn.twilightlib.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.twlghtdrgn.twilightlib.ILibrary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +21,9 @@ import java.nio.file.Paths;
 @SuppressWarnings("unused")
 public class ConfigLoader {
     private final ILibrary library;
+    @Getter
+    @Setter
+    private AbstractConfig[] configs;
     public ConfigLoader(ILibrary library) {
         this.library = library;
     }
@@ -66,5 +71,16 @@ public class ConfigLoader {
         node.set(config.getConfigClass(), cfg);
         loader.save(node);
         return cfg;
+    }
+
+    public boolean reload() {
+        try {
+            for (AbstractConfig config:configs)
+                config.reload();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
