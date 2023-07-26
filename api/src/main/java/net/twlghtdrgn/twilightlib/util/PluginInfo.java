@@ -31,8 +31,7 @@ public class PluginInfo {
             ||
             || Version: %pluginVersion%
             || Server version: %serverVersion%
-            || Plugin website: %website%
-            """
+            || Plugin website: %website%"""
                 .replace("%pluginName%", pluginName)
                 .replace("%pluginVersion%", pluginVersion)
                 .replace("%serverVersion%", serverVersion)
