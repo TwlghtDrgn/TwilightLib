@@ -1,7 +1,7 @@
 name: TwilightLib
 version: '${project.version}'
 main: net.twlghtdrgn.twilightlib.TwilightLib
-api-version: 1.19
+api-version: 1.20
 prefix: TL
 authors: [TwlghtDrgn]
 description: A library for TwlghtDrgn's plugins
