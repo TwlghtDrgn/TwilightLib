@@ -1,4 +1,4 @@
-package net.twlghtdrgn.twilightlib.util;
+package net.twlghtdrgn.twilightlib.api.util;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;

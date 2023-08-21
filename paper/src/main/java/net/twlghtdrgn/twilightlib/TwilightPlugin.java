@@ -1,8 +1,9 @@
 package net.twlghtdrgn.twilightlib;
 
 import lombok.Getter;
-import net.twlghtdrgn.twilightlib.config.ConfigLoader;
-import net.twlghtdrgn.twilightlib.util.PluginInfo;
+import net.twlghtdrgn.twilightlib.api.ILibrary;
+import net.twlghtdrgn.twilightlib.api.config.ConfigLoader;
+import net.twlghtdrgn.twilightlib.api.util.PluginInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,9 +24,13 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
         return plugin.getDataFolder().toPath();
     }
 
+    private static void setPlugin(TwilightPlugin lib) {
+        plugin = lib;
+    }
+
     @Override
     public void onEnable() {
-        plugin = this;
+        setPlugin(this);
         pluginInfo = new PluginInfo(getPluginMeta().getName(),
                 getPluginMeta().getVersion(),
                 getServer().getVersion(),

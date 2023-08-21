@@ -1,6 +1,6 @@
-package net.twlghtdrgn.twilightlib;
+package net.twlghtdrgn.twilightlib.api;
 
-import net.twlghtdrgn.twilightlib.config.ConfigLoader;
+import net.twlghtdrgn.twilightlib.api.config.ConfigLoader;
 
 import java.nio.file.Path;
 import java.util.logging.Logger;

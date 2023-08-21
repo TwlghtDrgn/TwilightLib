@@ -1,4 +1,4 @@
-package net.twlghtdrgn.twilightlib.config;
+package net.twlghtdrgn.twilightlib.api.config;
 
 import lombok.Getter;
 

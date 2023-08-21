@@ -1,7 +1,8 @@
 package net.twlghtdrgn.twilightlib;
 
 import com.velocitypowered.api.plugin.Plugin;
-import net.twlghtdrgn.twilightlib.config.ConfigLoader;
+import net.twlghtdrgn.twilightlib.api.ILibrary;
+import net.twlghtdrgn.twilightlib.api.config.ConfigLoader;
 
 import java.nio.file.Path;
 import java.util.logging.Logger;

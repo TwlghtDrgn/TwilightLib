@@ -1,4 +1,4 @@
-package net.twlghtdrgn.twilightlib.sql;
+package net.twlghtdrgn.twilightlib.api.sql;
 
 import org.jetbrains.annotations.Nullable;
 

@@ -1,8 +1,8 @@
-package net.twlghtdrgn.twilightlib.redis;
+package net.twlghtdrgn.twilightlib.api.redis;
 
 import lombok.Data;
-import net.twlghtdrgn.twilightlib.ILibrary;
-import net.twlghtdrgn.twilightlib.config.AbstractConfig;
+import net.twlghtdrgn.twilightlib.api.config.AbstractConfig;
+import net.twlghtdrgn.twilightlib.api.ILibrary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;

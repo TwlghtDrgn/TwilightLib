@@ -1,8 +1,8 @@
-package net.twlghtdrgn.twilightlib.config;
+package net.twlghtdrgn.twilightlib.api.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.twlghtdrgn.twilightlib.ILibrary;
+import net.twlghtdrgn.twilightlib.api.ILibrary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -18,14 +18,14 @@ import java.nio.file.Paths;
 /**
  * Class that contains custom Bukkit and Sponge config loaders
  */
-@SuppressWarnings("unused")
 public class ConfigLoader {
+    @Getter
     private final ILibrary library;
     @Getter
     @Setter
     private AbstractConfig[] configs;
-    public ConfigLoader(ILibrary library) {
-        this.library = library;
+    public ConfigLoader(ILibrary lib) {
+        this.library = lib;
     }
 
     /**

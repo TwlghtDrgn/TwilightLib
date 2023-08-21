@@ -1,9 +1,9 @@
-package net.twlghtdrgn.twilightlib.sql;
+package net.twlghtdrgn.twilightlib.api.sql;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
-import net.twlghtdrgn.twilightlib.ILibrary;
-import net.twlghtdrgn.twilightlib.config.AbstractConfig;
+import net.twlghtdrgn.twilightlib.api.config.AbstractConfig;
+import net.twlghtdrgn.twilightlib.api.ILibrary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
