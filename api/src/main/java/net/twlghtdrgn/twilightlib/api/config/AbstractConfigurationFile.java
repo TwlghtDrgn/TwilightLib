@@ -15,8 +15,10 @@ import java.nio.file.Paths;
  * An abstract configuration class used in {@link ConfigLoader}
  */
 public abstract class AbstractConfigurationFile {
+    @Getter
     @Setter
     private String configurationFileName;
+    @Getter
     @Setter
     private Class<?> configurationFileClass;
     private YamlConfigurationLoader loader;
