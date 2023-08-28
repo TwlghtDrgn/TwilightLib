@@ -2,7 +2,6 @@ package net.twlghtdrgn.twilightlib;
 
 import lombok.Getter;
 import net.twlghtdrgn.twilightlib.api.ILibrary;
-import net.twlghtdrgn.twilightlib.api.LibraryInfo;
 import net.twlghtdrgn.twilightlib.api.config.ConfigLoader;
 import net.twlghtdrgn.twilightlib.api.util.PluginInfo;
 import net.twlghtdrgn.twilightlib.exception.PluginLoadException;
@@ -16,22 +15,20 @@ import java.nio.file.Path;
  */
 @Getter
 public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
-    private TwilightPlugin plugin;
     private ConfigLoader configLoader;
     private PluginInfo pluginInfo;
 
     @Override
     public Path getPath() {
-        return plugin.getDataFolder().toPath();
+        return getDataFolder().toPath();
     }
 
     @Override
     public void onEnable() {
-        plugin = this;
-        pluginInfo = new PluginInfo(LibraryInfo.NAME,
-                LibraryInfo.VERSION,
+        pluginInfo = new PluginInfo(getPluginMeta().getName(),
+                getPluginMeta().getVersion(),
                 getServer().getVersion(),
-                LibraryInfo.URL);
+                getPluginMeta().getWebsite());
         configLoader = new ConfigLoader(this);
 
         getLogger().info(pluginInfo.getStartupMessage());
