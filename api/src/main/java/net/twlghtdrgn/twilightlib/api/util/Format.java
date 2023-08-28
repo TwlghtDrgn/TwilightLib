@@ -10,9 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Formatters used in my plugins
- * @author TwlghtDrgn
- * @version 0.0.1
  */
+@SuppressWarnings("unused")
 public class Format {
     private Format() {}
 

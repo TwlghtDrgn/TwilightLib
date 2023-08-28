@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Configuration builder class
+ * A simple configuration builder used in {@link ConfigLoader}
  */
 @SuppressWarnings("unused")
 public class ConfigBuilder {

@@ -2,8 +2,10 @@ package net.twlghtdrgn.twilightlib;
 
 import lombok.Getter;
 import net.twlghtdrgn.twilightlib.api.ILibrary;
+import net.twlghtdrgn.twilightlib.api.LibraryInfo;
 import net.twlghtdrgn.twilightlib.api.config.ConfigLoader;
 import net.twlghtdrgn.twilightlib.api.util.PluginInfo;
+import net.twlghtdrgn.twilightlib.exception.PluginLoadException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,8 +16,7 @@ import java.nio.file.Path;
  */
 @Getter
 public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
-    @Getter
-    private static TwilightPlugin plugin;
+    private TwilightPlugin plugin;
     private ConfigLoader configLoader;
     private PluginInfo pluginInfo;
 
@@ -24,24 +25,20 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
         return plugin.getDataFolder().toPath();
     }
 
-    private static void setPlugin(TwilightPlugin lib) {
-        plugin = lib;
-    }
-
     @Override
     public void onEnable() {
-        setPlugin(this);
-        pluginInfo = new PluginInfo(getPluginMeta().getName(),
-                getPluginMeta().getVersion(),
+        plugin = this;
+        pluginInfo = new PluginInfo(LibraryInfo.NAME,
+                LibraryInfo.VERSION,
                 getServer().getVersion(),
-                getPluginMeta().getWebsite());
+                LibraryInfo.URL);
         configLoader = new ConfigLoader(this);
 
         getLogger().info(pluginInfo.getStartupMessage());
 
         try {
             enable();
-        } catch (Exception e) {
+        } catch (PluginLoadException e) {
             getLogger().severe(getName() + " cannot be loaded properly and will be disabled. You can find a stacktrace below");
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
@@ -56,7 +53,7 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     /**
      * Execute code on startup
      */
-    protected abstract void enable() throws Exception;
+    protected abstract void enable() throws PluginLoadException;
 
     /**
      * Execute code on shutdown

@@ -1,10 +1,12 @@
 package net.twlghtdrgn.twilightlib.api.redis;
 
 import lombok.Data;
-import net.twlghtdrgn.twilightlib.api.config.AbstractConfig;
+import lombok.Getter;
 import net.twlghtdrgn.twilightlib.api.ILibrary;
+import net.twlghtdrgn.twilightlib.api.config.AbstractConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -19,7 +21,7 @@ import java.time.Duration;
 @SuppressWarnings("unused")
 public class RedisConnector {
     private final JedisPool jedisPool;
-    private static ILibrary library;
+    private final ILibrary library;
     public RedisConnector(@NotNull ILibrary library) {
         this.library = library;
         RedisConfig config = new RedisConfig("redis.yml", null);
@@ -29,10 +31,10 @@ public class RedisConnector {
             throw new NullPointerException("Unable to load redis config");
         }
 
-        String host = config.config.hostname;
-        String user = config.config.user;
-        String password = config.config.password;
-        int port = config.config.port;
+        String host = config.getConfig().getHostname();
+        String user = config.getConfig().getUser();
+        String password = config.getConfig().getPassword();
+        int port = config.getConfig().getPort();
 
         JedisPoolConfig poolConfig = new JedisPoolConfig();
 
@@ -48,7 +50,6 @@ public class RedisConnector {
         poolConfig.setBlockWhenExhausted(true);
 
         jedisPool = new JedisPool(poolConfig,host,port,user,password);
-        library.getLogger().info("Loaded Redis driver");
     }
 
     /**
@@ -60,14 +61,15 @@ public class RedisConnector {
         return jedisPool.getResource();
     }
 
-    protected static class RedisConfig extends AbstractConfig {
+    @Getter
+    protected class RedisConfig extends AbstractConfig {
         private Config config;
         protected RedisConfig(String configName, Class<?> configClass) {
             super(configName, Config.class);
         }
 
         @Override
-        public void reload() throws IOException {
+        public void reload() throws ConfigurateException {
             config = (Config) library.getConfigLoader().load(this);
         }
 

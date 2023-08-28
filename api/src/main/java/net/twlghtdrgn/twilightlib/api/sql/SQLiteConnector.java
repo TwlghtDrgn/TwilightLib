@@ -16,7 +16,6 @@ public class SQLiteConnector implements SQL {
     private final ILibrary library;
     public SQLiteConnector(@NotNull ILibrary library) {
         this.library = library;
-        library.getLogger().info("Using SQLite driver, no load is required");
     }
 
     /**

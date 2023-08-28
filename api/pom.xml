@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.twlghtdrgn</groupId>
         <artifactId>TwilightLib</artifactId>
-        <version>0.0.19e-SNAPSHOT</version>
+        <version>0.0.19f-SNAPSHOT</version>
     </parent>
 
     <name>TwilightLib-API</name>
@@ -23,6 +23,20 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>templating-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <id>filter-src</id>
+                        <goals>
+                            <goal>filter-sources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -47,23 +61,12 @@
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
-                                    <excludes>META-INF/**</excludes>
+                                    <excludes>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>META-INF/**</exclude>
+                                    </excludes>
                                 </filter>
                             </filters>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.checkerframework</pattern>
-                                    <shadedPattern>net.twlghtdrgn.twilightlib.api.shaded.org.checkerframework</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.google</pattern>
-                                    <shadedPattern>net.twlghtdrgn.twilightlib.api.shaded.google</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>io.leangen.geantyref</pattern>
-                                    <shadedPattern>net.twlghtdrgn.twilightlib.api.shaded.leangen.geantyref</shadedPattern>
-                                </relocation>
-                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -91,7 +94,6 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -155,6 +157,7 @@
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-yaml</artifactId>
             <version>4.2.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

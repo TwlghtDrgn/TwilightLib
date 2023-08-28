@@ -1,5 +1,7 @@
 package net.twlghtdrgn.twilightlib.util;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.twlghtdrgn.twilightlib.api.util.Format;
 import org.bukkit.Material;
@@ -12,6 +14,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A builder for the items
+ */
+@SuppressWarnings("unused")
 public class ItemBuilder {
     private final Component name;
     private final List<Component> description;
@@ -39,10 +45,9 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setEnchantments(Enchantment @NotNull [] enchantments, int[] levels) {
-        for (int i = 0; i < enchantments.length; i++) {
-            itemMeta.addEnchant(enchantments[i], levels[i], true);
-        }
+    public ItemBuilder setEnchantments(PreparedEnchantment @NotNull ... preparedEnchantments) {
+        for (PreparedEnchantment e:preparedEnchantments)
+            itemMeta.addEnchant(e.getEnchantment(), e.getLevel(), true);
         return this;
     }
 
@@ -56,5 +61,12 @@ public class ItemBuilder {
         itemMeta.lore(description);
         itemStack.setItemMeta(itemMeta);
         return this.itemStack;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PreparedEnchantment {
+        private Enchantment enchantment;
+        private int level;
     }
 }
