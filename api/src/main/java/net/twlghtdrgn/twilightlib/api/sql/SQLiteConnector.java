@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class SQLiteConnector implements SQL {
     private final ILibrary library;
     public SQLiteConnector(@NotNull ILibrary library) throws ClassNotFoundException {
-        Class.forName("org.jdbc.Driver");
+        Class.forName("org.sqlite.JDBC");
         this.library = library;
     }
 
