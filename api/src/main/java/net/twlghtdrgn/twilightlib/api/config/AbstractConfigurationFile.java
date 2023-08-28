@@ -29,9 +29,9 @@ public abstract class AbstractConfigurationFile {
 
     protected AbstractConfigurationFile(ILibrary library) {
         try {
-            if (configurationFileName == null)
+            if (getConfigurationFileName() == null)
                 throw new NullPointerException("Name of configuration file is not set");
-            if (configurationFileClass == null)
+            if (getConfigurationFileClass() == null)
                 throw new NullPointerException("Class of configuration file is not set");
             Path path = Paths.get(library.getPath().toString(), configurationFileName);
 
