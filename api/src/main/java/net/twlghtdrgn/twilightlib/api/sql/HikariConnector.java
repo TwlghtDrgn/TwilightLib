@@ -1,11 +1,13 @@
-package net.twlghtdrgn.twilightlib.sql;
+package net.twlghtdrgn.twilightlib.api.sql;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
-import net.twlghtdrgn.twilightlib.ILibrary;
-import net.twlghtdrgn.twilightlib.config.AbstractConfig;
+import lombok.Getter;
+import net.twlghtdrgn.twilightlib.api.ILibrary;
+import net.twlghtdrgn.twilightlib.api.config.AbstractConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 import java.io.IOException;
@@ -18,17 +20,22 @@ import java.sql.SQLException;
 @SuppressWarnings("unused")
 public class HikariConnector implements SQL {
     private final HikariDataSource dataSource;
-    private static ILibrary library;
+    private final ILibrary library;
 
     public HikariConnector(@NotNull ILibrary library) {
         this.library = library;
         SQLConfig config = new SQLConfig("database.yml",null);
+        try {
+            config.reload();
+        } catch (IOException e) {
+            throw new NullPointerException("Unable to load db config");
+        }
 
-        String host = config.config.hostname;
-        String port = config.config.port;
-        String database = config.config.database;
-        String user = config.config.user;
-        String password = config.config.password;
+        String host = config.getConfig().getHostname();
+        String port = config.getConfig().getPort();
+        String database = config.getConfig().getDatabase();
+        String user = config.getConfig().getUser();
+        String password = config.getConfig().getPassword();
 
         dataSource = new HikariDataSource();
 
@@ -41,8 +48,6 @@ public class HikariConnector implements SQL {
         dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         dataSource.addDataSourceProperty("useUnicode",true);
         dataSource.addDataSourceProperty("characterEncoding","utf8");
-
-        library.getLogger().info("Loaded MariaDB driver");
     }
 
     /**
@@ -55,7 +60,8 @@ public class HikariConnector implements SQL {
         return dataSource.getConnection();
     }
 
-    protected static class SQLConfig extends AbstractConfig {
+    @Getter
+    protected class SQLConfig extends AbstractConfig {
         private Config config;
 
         public SQLConfig(String configName, Class<?> configClass) {
@@ -63,7 +69,7 @@ public class HikariConnector implements SQL {
         }
 
         @Override
-        public void reload() throws IOException {
+        public void reload() throws ConfigurateException {
             config = (Config) library.getConfigLoader().load(this);
         }
 

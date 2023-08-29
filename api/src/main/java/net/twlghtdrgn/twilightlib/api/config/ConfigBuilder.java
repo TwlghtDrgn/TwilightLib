@@ -1,4 +1,4 @@
-package net.twlghtdrgn.twilightlib.config;
+package net.twlghtdrgn.twilightlib.api.config;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Configuration builder class
+ * A simple configuration builder used in {@link ConfigLoader}
  */
 @SuppressWarnings("unused")
 public class ConfigBuilder {

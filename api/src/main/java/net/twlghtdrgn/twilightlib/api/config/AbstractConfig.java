@@ -1,9 +1,11 @@
-package net.twlghtdrgn.twilightlib.config;
+package net.twlghtdrgn.twilightlib.api.config;
 
 import lombok.Getter;
+import org.spongepowered.configurate.ConfigurateException;
 
-import java.io.IOException;
-
+/**
+ * An abstract configuration class used in {@link ConfigLoader}
+ */
 public abstract class AbstractConfig {
     @Getter
     private final String configName;
@@ -15,5 +17,5 @@ public abstract class AbstractConfig {
         this.configClass = configClass;
     }
 
-    public abstract void reload() throws IOException;
+    public abstract void reload() throws ConfigurateException;
 }

@@ -1,6 +1,6 @@
-package net.twlghtdrgn.twilightlib.sql;
+package net.twlghtdrgn.twilightlib.api.sql;
 
-import net.twlghtdrgn.twilightlib.ILibrary;
+import net.twlghtdrgn.twilightlib.api.ILibrary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,9 +14,9 @@ import java.sql.SQLException;
 @SuppressWarnings("unused")
 public class SQLiteConnector implements SQL {
     private final ILibrary library;
-    public SQLiteConnector(@NotNull ILibrary library) {
+    public SQLiteConnector(@NotNull ILibrary library) throws ClassNotFoundException {
+        Class.forName("org.sqlite.JDBC");
         this.library = library;
-        library.getLogger().info("Using SQLite driver, no load is required");
     }
 
     /**

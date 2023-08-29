@@ -1,21 +1,15 @@
-package net.twlghtdrgn.twilightlib.util;
+package net.twlghtdrgn.twilightlib.api.util;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 @Getter
 public class PluginInfo {
-    @Nullable
-    private static PluginInfo info;
-
     public PluginInfo(String pluginName, String pluginVersion, String serverVersion, String website) {
         this.pluginName = pluginName;
         this.pluginVersion = pluginVersion;
         this.serverVersion = serverVersion;
         this.website = website;
-
-        info = this;
     }
 
     private final String pluginName;
@@ -31,8 +25,7 @@ public class PluginInfo {
             ||
             || Version: %pluginVersion%
             || Server version: %serverVersion%
-            || Plugin website: %website%
-            """
+            || Plugin website: %website%"""
                 .replace("%pluginName%", pluginName)
                 .replace("%pluginVersion%", pluginVersion)
                 .replace("%serverVersion%", serverVersion)
