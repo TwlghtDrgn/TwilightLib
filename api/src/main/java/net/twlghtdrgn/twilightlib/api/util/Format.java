@@ -1,7 +1,6 @@
 package net.twlghtdrgn.twilightlib.api.util;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -27,8 +26,7 @@ public class Format {
     public static Component parse(@NotNull String string) {
         if (string.contains("§") || string.contains("&")) string = fromLegacy(string);
         return MiniMessage.miniMessage().deserializeOr(string, Component.text("Error"))
-                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)
-                .color(TextColor.color(255,255,255));
+                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
     /**
@@ -49,8 +47,7 @@ public class Format {
     public static Component gson(@NotNull String string) {
         if (string.contains("§") || string.contains("&")) string = fromLegacy(string);
         return GsonComponentSerializer.gson().deserializeOr(string, Component.text("Error"))
-                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)
-                .color(TextColor.color(255,255,255));
+                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
     /**
