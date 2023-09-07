@@ -20,7 +20,7 @@ public abstract class AbstractConfigurationFile {
     private YamlConfigurationLoader loader;
     private CommentedConfigurationNode node;
     @Getter
-    private static Object config;
+    private static Object config = null;
 
     protected AbstractConfigurationFile(ILibrary library) {
         this.library = library;
@@ -48,7 +48,7 @@ public abstract class AbstractConfigurationFile {
     }
 
     public void reload() throws ConfigurateException {
-        if (config != null) {
+        if (node != null && config != null) {
             node.set(configurationFileClass, config);
             final CommentedConfigurationNode tempNode = node.copy();
             node = loader.load();

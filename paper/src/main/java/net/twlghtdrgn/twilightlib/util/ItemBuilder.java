@@ -31,8 +31,23 @@ public class ItemBuilder {
         this.description = new ArrayList<>();
     }
 
+    public ItemBuilder(@NotNull ItemStack itemStack, String name) {
+        this.itemStack = itemStack;
+        this.itemMeta = itemStack.getItemMeta();
+        this.name = Format.parse(name);
+        this.description = new ArrayList<>();
+    }
+
     public ItemBuilder(Material material, String name, @NotNull String description) {
         this.itemStack = new ItemStack(material);
+        this.itemMeta = itemStack.getItemMeta();
+        this.name = Format.parse(name);
+        this.description = Arrays.stream(description.split("<newline>"))
+                .map(Format::parse).toList();
+    }
+
+    public ItemBuilder(@NotNull ItemStack itemStack, String name, @NotNull String description) {
+        this.itemStack = itemStack;
         this.itemMeta = itemStack.getItemMeta();
         this.name = Format.parse(name);
         this.description = Arrays.stream(description.split("<newline>"))
