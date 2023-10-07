@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.twlghtdrgn</groupId>
         <artifactId>TwilightLib</artifactId>
-        <version>0.1.2</version>
+        <version>0.1.22</version>
     </parent>
 
     <name>TwilightLib-Velocity</name>
@@ -65,6 +65,30 @@
                                     <resource>META-INF/services/java.sql.Driver</resource>
                                 </transformer>
                             </transformers>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>net.twlghtdrgn.twilightlib.libraries.hikari</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>redis.clients.jedis</pattern>
+                                    <shadedPattern>net.twlghtdrgn.twilightlib.libraries.jedis</shadedPattern>
+                                </relocation>
+
+<!--                                <relocation>-->
+<!--                                    <pattern>org.spongepowered.configurate</pattern>-->
+<!--                                    <shadedPattern>net.twlghtdrgn.twilightlib.libraries.configurate</shadedPattern>-->
+<!--                                </relocation>-->
+
+                                <relocation>
+                                    <pattern>org.mariadb.jdbc</pattern>
+                                    <shadedPattern>net.twlghtdrgn.twilightlib.libraries.jdbc.mariadb</shadedPattern>
+                                </relocation>
+<!--                                <relocation>-->
+<!--                                    <pattern>org.sqlite</pattern>-->
+<!--                                    <shadedPattern>net.twlghtdrgn.twilightlib.libraries.jdbc.sqlite</shadedPattern>-->
+<!--                                </relocation>-->
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -82,7 +106,7 @@
         <dependency>
             <groupId>net.twlghtdrgn</groupId>
             <artifactId>TwilightLib-API</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.22</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
