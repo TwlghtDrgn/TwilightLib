@@ -43,4 +43,14 @@ public class TwilightLib implements ILibrary {
     public Path getPath() {
         return null;
     }
+
+    @Override
+    public Logger log() {
+        return null;
+    }
+
+    @Override
+    public boolean reload() {
+        return false;
+    }
 }

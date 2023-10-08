@@ -13,4 +13,9 @@ public class TwilightLib extends TwilightPlugin {
     protected void disable() {
         // also not needed
     }
+
+    @Override
+    public boolean reload() {
+        return false;
+    }
 }

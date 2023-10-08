@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.twlghtdrgn</groupId>
         <artifactId>TwilightLib</artifactId>
-        <version>0.1.22</version>
+        <version>0.2.0</version>
     </parent>
 
     <name>TwilightLib-Velocity</name>
@@ -75,19 +75,10 @@
                                     <shadedPattern>net.twlghtdrgn.twilightlib.libraries.jedis</shadedPattern>
                                 </relocation>
 
-<!--                                <relocation>-->
-<!--                                    <pattern>org.spongepowered.configurate</pattern>-->
-<!--                                    <shadedPattern>net.twlghtdrgn.twilightlib.libraries.configurate</shadedPattern>-->
-<!--                                </relocation>-->
-
                                 <relocation>
                                     <pattern>org.mariadb.jdbc</pattern>
                                     <shadedPattern>net.twlghtdrgn.twilightlib.libraries.jdbc.mariadb</shadedPattern>
                                 </relocation>
-<!--                                <relocation>-->
-<!--                                    <pattern>org.sqlite</pattern>-->
-<!--                                    <shadedPattern>net.twlghtdrgn.twilightlib.libraries.jdbc.sqlite</shadedPattern>-->
-<!--                                </relocation>-->
                             </relocations>
                         </configuration>
                     </execution>
@@ -106,7 +97,7 @@
         <dependency>
             <groupId>net.twlghtdrgn</groupId>
             <artifactId>TwilightLib-API</artifactId>
-            <version>0.1.22</version>
+            <version>0.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
