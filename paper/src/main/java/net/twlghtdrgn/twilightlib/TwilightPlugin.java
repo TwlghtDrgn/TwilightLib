@@ -3,8 +3,7 @@ package net.twlghtdrgn.twilightlib;
 import lombok.Getter;
 import net.twlghtdrgn.twilightlib.api.ILibrary;
 import net.twlghtdrgn.twilightlib.api.config.ConfigLoader;
-import net.twlghtdrgn.twilightlib.api.util.PluginInfo;
-import net.twlghtdrgn.twilightlib.exception.PluginLoadException;
+import net.twlghtdrgn.twilightlib.api.util.PluginInfoProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
@@ -18,7 +17,7 @@ import java.nio.file.Path;
 @SuppressWarnings("UnstableApiUsage")
 public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     private ConfigLoader configLoader;
-    private PluginInfo pluginInfo;
+    private PluginInfoProvider pluginInfo;
 
     @Override
     public Logger log() {
@@ -32,18 +31,18 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
 
     @Override
     public void onEnable() {
-        pluginInfo = new PluginInfo(getPluginMeta().getName(),
+        pluginInfo = new PluginInfoProvider(getPluginMeta().getName(),
                 getPluginMeta().getVersion(),
                 getServer().getVersion(),
                 getPluginMeta().getWebsite());
         configLoader = new ConfigLoader(this);
 
-        getLogger().info(pluginInfo.getStartupMessage());
+        log().info(pluginInfo.getStartupMessage());
 
         try {
             enable();
-        } catch (PluginLoadException e) {
-            getLogger().severe(getName() + " cannot be loaded properly and will be disabled. You can find a stacktrace below");
+        } catch (Exception e) {
+            log().error("{} cannot be loaded properly and will be disabled. You can find a stacktrace below", getName());
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
         }
@@ -57,7 +56,7 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     /**
      * Execute code on startup
      */
-    protected abstract void enable() throws PluginLoadException;
+    protected abstract void enable() throws Exception;
 
     /**
      * Execute code on shutdown

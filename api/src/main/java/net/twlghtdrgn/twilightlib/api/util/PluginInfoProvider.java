@@ -1,17 +1,12 @@
 package net.twlghtdrgn.twilightlib.api.util;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public class PluginInfo {
-    public PluginInfo(String pluginName, String pluginVersion, String serverVersion, String website) {
-        this.pluginName = pluginName;
-        this.pluginVersion = pluginVersion;
-        this.serverVersion = serverVersion;
-        this.website = website;
-    }
-
+@AllArgsConstructor
+public class PluginInfoProvider {
     private final String pluginName;
     private final String pluginVersion;
     private final String serverVersion;

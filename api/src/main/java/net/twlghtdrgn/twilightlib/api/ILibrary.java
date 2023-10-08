@@ -1,7 +1,7 @@
 package net.twlghtdrgn.twilightlib.api;
 
 import net.twlghtdrgn.twilightlib.api.config.ConfigLoader;
-import net.twlghtdrgn.twilightlib.api.util.PluginInfo;
+import net.twlghtdrgn.twilightlib.api.util.PluginInfoProvider;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public interface ILibrary {
     ConfigLoader getConfigLoader();
     Path getPath();
-    PluginInfo getPluginInfo();
+    PluginInfoProvider getPluginInfo();
     Logger log();
     boolean reload();
 }
