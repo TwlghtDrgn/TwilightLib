@@ -13,21 +13,25 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * A MySql (MariaDB) connector using HikariCP
+ * @author TwlghtDrgn
+ * @since 0.0.1
  */
 @SuppressWarnings("unused")
 public class HikariConnector implements SQL {
     private final HikariDataSource dataSource;
     private final ILibrary library;
 
-    public HikariConnector(@NotNull ILibrary library) {
+    public HikariConnector(@NotNull ILibrary library) throws TimeoutException, IllegalStateException {
         this.library = library;
         SQLConfig config = new SQLConfig("database.yml",null);
         try {
             config.reload();
         } catch (IOException e) {
+            library.log().error("MariaDB config file cannot be loaded", e);
             throw new NullPointerException("Unable to load db config");
         }
 
@@ -48,10 +52,23 @@ public class HikariConnector implements SQL {
         dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         dataSource.addDataSourceProperty("useUnicode",true);
         dataSource.addDataSourceProperty("characterEncoding","utf8");
+
+        library.log().info("Testing database connection...");
+        try (Connection conn = getConnection()) {
+            if (conn != null && conn.isValid(10))
+                library.log().info("Database connection: OK");
+            else {
+                library.log().warn("Database connection: Timed out");
+                throw new TimeoutException("Connection to the database timed out");
+            }
+        } catch (SQLException e) {
+            library.log().error("Unable to connect. Is credentials are wrong?", e);
+            throw new IllegalStateException("MariaDB cannot be loaded");
+        }
     }
 
     /**
-     * Get a connection to DB
+     * Get a connection to the DB
      * @return database connection
      */
     @Override
@@ -82,5 +99,10 @@ public class HikariConnector implements SQL {
             private String user = "admin";
             private String password = "password";
         }
+    }
+
+    public void shutdown() {
+        if (dataSource != null)
+            dataSource.close();
     }
 }
