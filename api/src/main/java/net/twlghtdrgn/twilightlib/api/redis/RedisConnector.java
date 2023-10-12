@@ -1,9 +1,8 @@
 package net.twlghtdrgn.twilightlib.api.redis;
 
 import lombok.Data;
-import lombok.Getter;
 import net.twlghtdrgn.twilightlib.api.ILibrary;
-import net.twlghtdrgn.twilightlib.api.config.AbstractConfig;
+import net.twlghtdrgn.twilightlib.api.config.Configuration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurateException;
@@ -11,6 +10,7 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -24,19 +24,16 @@ import java.time.Duration;
 public class RedisConnector {
     private final JedisPool jedisPool;
     private final ILibrary library;
-    public RedisConnector(@NotNull ILibrary library) {
+    private final Configuration<RedisConfig> redisConfig;
+    public RedisConnector(@NotNull ILibrary library) throws ConfigurateException, IllegalStateException {
         this.library = library;
-        RedisConfig config = new RedisConfig("redis.yml", null);
-        try {
-            config.reload();
-        } catch (IOException e) {
-            throw new NullPointerException("Unable to load redis config");
-        }
+        redisConfig = new Configuration<>(library, RedisConfig.class, "redis");
+        redisConfig.reload();
 
-        String host = config.getConfig().getHostname();
-        String user = config.getConfig().getUser();
-        String password = config.getConfig().getPassword();
-        int port = config.getConfig().getPort();
+        String host = redisConfig.get().getHostname();
+        String user = redisConfig.get().getUser();
+        String password = redisConfig.get().getPassword();
+        int port = redisConfig.get().getPort();
 
         JedisPoolConfig poolConfig = new JedisPoolConfig();
 
@@ -51,7 +48,14 @@ public class RedisConnector {
         poolConfig.setNumTestsPerEvictionRun(3);
         poolConfig.setBlockWhenExhausted(true);
 
-        jedisPool = new JedisPool(poolConfig,host,port,user,password);
+        jedisPool = new JedisPool(poolConfig, host, port, user, password);
+        library.log().info("Testing Redis connection...");
+        try (Jedis jedis = getResource()) {
+            library.log().info("Redis connection: OK");
+        } catch (JedisConnectionException e) {
+            library.log().error("Unable to connect. Is credentials are wrong?", e);
+            throw new IllegalStateException("Redis cannot be loaded");
+        }
     }
 
     /**
@@ -63,25 +67,17 @@ public class RedisConnector {
         return jedisPool.getResource();
     }
 
-    @Getter
-    protected class RedisConfig extends AbstractConfig {
-        private Config config;
-        protected RedisConfig(String configName, Class<?> configClass) {
-            super(configName, Config.class);
-        }
+    public void close() throws IOException {
+        library.log().info("Shutting down Redis");
+        this.jedisPool.close();
+    }
 
-        @Override
-        public void reload() throws ConfigurateException {
-            config = (Config) library.getConfigLoader().load(this);
-        }
-
-        @Data
-        @ConfigSerializable
-        public static class Config {
-            private String hostname = "127.0.0.1";
-            private String user = "admin";
-            private String password = "password";
-            private int port;
-        }
+    @Data
+    @ConfigSerializable
+    protected static class RedisConfig {
+        private String hostname = "127.0.0.1";
+        private String user = "redis";
+        private String password = "password";
+        private int port = 6379;
     }
 }

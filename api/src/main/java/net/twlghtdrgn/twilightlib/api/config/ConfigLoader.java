@@ -21,7 +21,6 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class ConfigLoader {
     private final ILibrary library;
-    private final Set<AbstractConfigurationFile> configurationFiles = new HashSet<>();
     private final Set<AbstractConfig> legacyConfiguration = new HashSet<>();
     public ConfigLoader(ILibrary lib) {
         this.library = lib;
@@ -74,10 +73,6 @@ public class ConfigLoader {
 
     public boolean reload() {
         try {
-            if (!configurationFiles.isEmpty())
-                for (AbstractConfigurationFile c:configurationFiles)
-                    c.reload();
-
             if (!legacyConfiguration.isEmpty())
                 for (AbstractConfig c:legacyConfiguration)
                     c.reload();
@@ -87,10 +82,6 @@ public class ConfigLoader {
             library.log().error("Configuration files cannot be loaded", e);
             return false;
         }
-    }
-
-    public void addConfig(AbstractConfigurationFile configurationFile) {
-        configurationFiles.add(configurationFile);
     }
 
     public void addConfig(AbstractConfig legacyConfigFile) {

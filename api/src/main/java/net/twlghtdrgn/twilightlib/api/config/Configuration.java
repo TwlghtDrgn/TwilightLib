@@ -9,6 +9,12 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.nio.file.Paths;
 
+/**
+ * A configuration file wrapper.
+ * Requires a class with {@link org.spongepowered.configurate.objectmapping.ConfigSerializable} annotation
+ * @author TwlghtDrgn
+ * @version 0.2.0
+ */
 @SuppressWarnings("unused")
 public class Configuration<T> {
     private T config;
