@@ -1,7 +1,7 @@
 package net.twlghtdrgn.twilightlib;
 
 /**
- * Loads this library as a plugin
+ * Loads this library as a plugin.
  */
 public class TwilightLib extends TwilightPlugin {
     @Override

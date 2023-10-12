@@ -17,6 +17,8 @@ import java.time.Duration;
 
 /**
  * A Redis messaging connector using Jedis
+ * @author TwlghtDrgn
+ * @since 0.0.1
  */
 @SuppressWarnings("unused")
 public class RedisConnector {

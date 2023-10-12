@@ -11,21 +11,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Formatters used in my plugins
+ * A set of formatters that are used in my plugins
+ * @author TwlghtDrgn
+ * @since 0.0.1
  */
 @SuppressWarnings("unused")
 public class Format {
     private Format() {}
+    private static final String ERROR_AS_STRING = "parsing error";
+    private static final Component ERROR_AS_COMPONENT = parse("<red>" + ERROR_AS_STRING);
 
     /**
      * Converts text to a component
-     * @param string a string to convert
+     * @param in a string to convert
      * @return a component
      */
     @NotNull
-    public static Component parse(@NotNull String string) {
-        if (string.contains("§") || string.contains("&")) string = fromLegacy(string);
-        return MiniMessage.miniMessage().deserializeOr(string, Component.text("Error"))
+    public static Component parse(@NotNull String in) {
+        if (in.contains("§") || in.contains("&")) in = fromLegacy(in);
+        return MiniMessage.miniMessage().deserializeOr(in, ERROR_AS_COMPONENT)
                 .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
@@ -35,7 +39,7 @@ public class Format {
      * @return a regular string without any formatting
      */
     public static String parse(Component component) {
-        return PlainTextComponentSerializer.plainText().serializeOr(component,"Error");
+        return PlainTextComponentSerializer.plainText().serializeOr(component,ERROR_AS_STRING);
     }
 
     /**
@@ -46,7 +50,7 @@ public class Format {
     @NotNull
     public static Component gson(@NotNull String string) {
         if (string.contains("§") || string.contains("&")) string = fromLegacy(string);
-        return GsonComponentSerializer.gson().deserializeOr(string, Component.text("Error"))
+        return GsonComponentSerializer.gson().deserializeOr(string, ERROR_AS_COMPONENT)
                 .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
@@ -120,22 +124,24 @@ public class Format {
             "<reset>",
     };
 
-    /**
-     * Allows you to convert legacy color codes to a MiniMessage colors
-     * @param string to convert
-     * @return converted string
-     */
-    public static String fromLegacy(String string) {
-        final Map<String, String> replacements = new HashMap<>();
+    private static final Map<String, String> replacements = new HashMap<>();
+
+    static {
         for (int i = 0; i < legacyColors.length; i++) {
             for (String s:legacySymbols)
                 replacements.put(s + legacyColors[i], miniColors[i]);
         }
+    }
 
-        for (var entry : replacements.entrySet()) {
-            string = string.replace(entry.getKey(), entry.getValue());
+    /**
+     * Allows you to convert legacy color codes to a MiniMessage colors
+     * @param in to convert
+     * @return converted string
+     */
+    public static String fromLegacy(String in) {
+        for (var entry:replacements.entrySet()) {
+            in = in.replace(entry.getKey(), entry.getValue());
         }
-
-        return string;
+        return in;
     }
 }

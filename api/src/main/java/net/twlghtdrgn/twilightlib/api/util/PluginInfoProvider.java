@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Contains plugin info such as plugin name, version and its website
+ */
 @Getter
 @AllArgsConstructor
 public class PluginInfoProvider {
@@ -12,6 +15,9 @@ public class PluginInfoProvider {
     private final String serverVersion;
     private final String website;
 
+    /**
+     * Shown on plugin startup. Contains plugin name, version, server version and a website
+     */
     @NotNull
     public String getStartupMessage() {
         return """

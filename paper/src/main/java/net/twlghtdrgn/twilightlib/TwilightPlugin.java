@@ -12,6 +12,8 @@ import java.nio.file.Path;
 
 /**
  * An abstract library class
+ * Extend it if you are using Paper
+ * For Velocity you should use "TwilightLib-API"
  */
 @Getter
 @SuppressWarnings("UnstableApiUsage")
@@ -19,16 +21,27 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     private ConfigLoader configLoader;
     private PluginInfoProvider pluginInfo;
 
+    /**
+     * An SLF4J logger
+     * @return {@link Logger}
+     */
     @Override
     public Logger log() {
         return this.getSLF4JLogger();
     }
 
+    /**
+     * A plugin directory
+     */
     @Override
     public Path getPath() {
         return getDataFolder().toPath();
     }
 
+
+    /**
+     * !!DO NOT OVERRIDE IT!!
+     */
     @Override
     public void onEnable() {
         pluginInfo = new PluginInfoProvider(getPluginMeta().getName(),
@@ -42,24 +55,26 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
         try {
             enable();
         } catch (Exception e) {
-            log().error("{} cannot be loaded properly and will be disabled. You can find a stacktrace below", getName());
-            e.printStackTrace();
+            log().error("{} cannot be loaded properly and will be disabled", getName(), e);
             Bukkit.getPluginManager().disablePlugin(this);
         }
     }
 
+    /**
+     * !!DO NOT OVERRIDE IT!!
+     */
     @Override
     public void onDisable() {
         disable();
     }
 
     /**
-     * Execute code on startup
+     * Code that executed on startup
      */
     protected abstract void enable() throws Exception;
 
     /**
-     * Execute code on shutdown
+     * Code that executed on shutdown
      */
     protected abstract void disable();
 }

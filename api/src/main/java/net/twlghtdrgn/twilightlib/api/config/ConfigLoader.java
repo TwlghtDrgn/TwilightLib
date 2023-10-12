@@ -84,7 +84,7 @@ public class ConfigLoader {
 
             return true;
         } catch (ConfigurateException e) {
-            e.printStackTrace();
+            library.log().error("Configuration files cannot be loaded", e);
             return false;
         }
     }

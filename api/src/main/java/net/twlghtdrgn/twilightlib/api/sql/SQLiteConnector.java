@@ -10,6 +10,8 @@ import java.sql.SQLException;
 
 /**
  * An SQLite Database connector
+ * @author TwlghtDrgn
+ * @since 0.0.1
  */
 @SuppressWarnings("unused")
 public class SQLiteConnector implements SQL {
@@ -17,6 +19,7 @@ public class SQLiteConnector implements SQL {
     public SQLiteConnector(@NotNull ILibrary library) throws ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
         this.library = library;
+        library.log().info("SQLite is loaded");
     }
 
     /**
