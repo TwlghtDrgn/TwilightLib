@@ -9,7 +9,8 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 public class DialogEntry {
-    private final String question;
+    private final String entryID;
+    private final String prompt;
     private final Map<String, String> answers = new HashMap<>();
 
     public DialogEntry addAnswer(String answer, String action) {

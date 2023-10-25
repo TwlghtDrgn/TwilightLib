@@ -1,12 +1,15 @@
 package net.twlghtdrgn.twilightlib;
 
+import net.twlghtdrgn.twilightlib.event.ChatCallbackEvent;
+import org.bukkit.Bukkit;
+
 /**
  * Loads this library as a plugin.
  */
 public class TwilightLib extends TwilightPlugin {
     @Override
     protected void enable() {
-        // not needed
+        Bukkit.getPluginManager().registerEvents(new ChatCallbackEvent(), this);
     }
 
     @Override
