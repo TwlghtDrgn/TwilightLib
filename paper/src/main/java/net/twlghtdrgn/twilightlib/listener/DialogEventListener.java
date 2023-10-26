@@ -13,10 +13,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.StringJoiner;
 
 public class DialogEventListener implements Listener {
     private final Dialog<?> dialog;
@@ -30,15 +27,15 @@ public class DialogEventListener implements Listener {
     public void onChatCallback(@NotNull ChatCallbackEvent event) {
         if (!event.getPlugin().equalsIgnoreCase(plugin.getName()) || !event.getChannel().equalsIgnoreCase(dialog.getDialogOwner().getName())) return;
         final Player player = event.getPlayer();
-        if (event.getData()[0].equals(dialog.getEndPrompt())) {
+        if (event.getData()[0].equals(dialog.getEndEntryID())) {
             dialog.end(player);
             event.setCancelled(true);
             return;
         }
         if (event.getData().length < 2) return;
 
-        if (event.getData()[0].equals("dialog_next")) {
-            Optional<DialogEntry> entry = dialog.getCallbackEntry(event.getData()[1]);
+        if (event.getData()[0].equals("dialog")) {
+            Optional<DialogEntry> entry = dialog.getEntry(event.getData()[1]);
             if (entry.isEmpty()) return;
             final Component component = dialog.getBuiltEntry(entry.get());
             player.sendMessage(component);

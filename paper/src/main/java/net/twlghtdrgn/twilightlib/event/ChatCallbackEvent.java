@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @Setter
 public class ChatCallbackEvent extends Event implements Listener, Cancellable {
-    private static final String COMMAND_PREFIX = "twilightlib:callback";
+    private static final String CALLBACK_COMMAND = "twilightlib:callback";
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private Player player;
     private String plugin;
@@ -24,21 +24,18 @@ public class ChatCallbackEvent extends Event implements Listener, Cancellable {
     }
     @Override
     public @NotNull HandlerList getHandlers() {
-        return HANDLER_LIST;
+        return getHandlerList();
     }
 
     @EventHandler
     public void onSlashCommand(@NotNull PlayerCommandPreprocessEvent event) {
-        if (!event.getMessage().startsWith("/" + COMMAND_PREFIX)) return;
+        if (!event.getMessage().startsWith("/" + CALLBACK_COMMAND)) return;
+        final String[] in = event.getMessage().split(" ");
+        if (in.length != 3) return;
+        final String[] meta = in[1].split(":");
+        if (meta.length != 2) return;
         event.setCancelled(true);
 
-        final String[] in = event.getMessage().split(" ");
-        if (in.length < 3) throw new IllegalArgumentException(String.format("Not enough callback data (%s)", in.length));
-        else if (in.length > 3) throw new IllegalArgumentException(String.format("Oversized callback data (%s)", in.length));
-
-        final String[] meta = in[1].split(":");
-        if (meta.length < 2) throw new IllegalArgumentException(String.format("Not enough channel data (%s)", meta.length));
-        else if (meta.length > 2) throw new IllegalArgumentException(String.format("Oversized channel data (%s)", in.length));
 
         this.player = event.getPlayer();
         this.plugin = meta[0];
@@ -48,7 +45,7 @@ public class ChatCallbackEvent extends Event implements Listener, Cancellable {
         this.callEvent();
     }
 
-    public static String getCallbackPrefix(@NotNull TwilightPlugin plugin, String channel){
-        return String.format("%s %s:%s", COMMAND_PREFIX, plugin.getName(), channel);
+    public static String getCallbackCommand(@NotNull TwilightPlugin plugin, String channel){
+        return String.format("%s %s:%s", CALLBACK_COMMAND, plugin.getName(), channel);
     }
 }
