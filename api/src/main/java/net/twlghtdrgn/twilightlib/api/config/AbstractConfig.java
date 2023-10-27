@@ -6,10 +6,9 @@ import org.spongepowered.configurate.ConfigurateException;
 /**
  * An abstract configuration class used in {@link ConfigLoader}
  */
+@Getter
 public abstract class AbstractConfig {
-    @Getter
     private final String configName;
-    @Getter
     private final Class<?> configClass;
 
     protected AbstractConfig(String configName, Class<?> configClass) {
