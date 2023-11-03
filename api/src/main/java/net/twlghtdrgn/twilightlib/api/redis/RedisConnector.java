@@ -22,13 +22,19 @@ import java.time.Duration;
  */
 @SuppressWarnings("unused")
 public class RedisConnector {
-    private final JedisPool jedisPool;
-    private final ILibrary library;
-    private final Configuration<RedisConfig> redisConfig;
-    public RedisConnector(@NotNull ILibrary library) throws ConfigurateException, IllegalStateException {
-        this.library = library;
+    private RedisConnector() {}
+    private static JedisPool jedisPool;
+    private static ILibrary library;
+    private static Configuration<RedisConfig> redisConfig;
+    public static void initJedis(ILibrary lib) throws ConfigurateException, IllegalStateException {
+        library = lib;
+
         redisConfig = new Configuration<>(library, RedisConfig.class, "redis");
         redisConfig.reload();
+        if (!redisConfig.get().isJedisEnabled()) {
+            library.log().info("Redis is disabled in the library configuration, skipping..");
+            return;
+        } else library.log().info("Redis is enabled in the library configuration, loading..");
 
         String host = redisConfig.get().getHostname();
         String user = redisConfig.get().getUser();
@@ -48,7 +54,12 @@ public class RedisConnector {
         poolConfig.setNumTestsPerEvictionRun(3);
         poolConfig.setBlockWhenExhausted(true);
 
-        jedisPool = new JedisPool(poolConfig, host, port, user, password);
+        if (user.length() == 0) {
+            jedisPool = new JedisPool(poolConfig, host, port);
+        } else if (password.length() == 0) {
+            jedisPool = new JedisPool(poolConfig, host, port, user, null);
+        } else jedisPool = new JedisPool(poolConfig, host, port, user, password);
+
         library.log().info("Testing Redis connection...");
         try (Jedis jedis = getResource()) {
             library.log().info("Redis connection: OK");
@@ -63,21 +74,33 @@ public class RedisConnector {
      * @return database connection
      */
     @Nullable
-    public Jedis getResource() {
+    public static Jedis getResource() {
         return jedisPool.getResource();
     }
 
-    public void close() throws IOException {
+    public static boolean sendMessage(final @NotNull String channel, final byte[] data) {
+        try (Jedis jedis = getResource()) {
+            jedis.publish(channel.getBytes(), data);
+            return true;
+        } catch (Exception e) {
+            library.log().error("An error has occurred when a plugin tried to publish a message", e);
+            return false;
+        }
+    }
+
+    public static void close() throws IOException {
+        if (!redisConfig.get().isJedisEnabled()) return;
         library.log().info("Shutting down Redis");
-        this.jedisPool.close();
+        jedisPool.close();
     }
 
     @Data
     @ConfigSerializable
     protected static class RedisConfig {
+        private boolean jedisEnabled = false;
         private String hostname = "127.0.0.1";
-        private String user = "redis";
-        private String password = "password";
+        private String user = "";
+        private String password = "";
         private int port = 6379;
     }
 }

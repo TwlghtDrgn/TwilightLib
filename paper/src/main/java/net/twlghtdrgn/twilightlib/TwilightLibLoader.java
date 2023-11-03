@@ -18,6 +18,7 @@ public class TwilightLibLoader implements PluginLoader {
 
         mvn.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:5.0.1"), null));
         mvn.addDependency(new Dependency(new DefaultArtifact("org.mariadb.jdbc:mariadb-java-client:3.1.2"), null));
+        mvn.addDependency(new Dependency(new DefaultArtifact("redis.clients:jedis:4.4.3"), null));
         mvn.addRepository(new RemoteRepository.Builder("maven central","default","https://repo1.maven.org/maven2/").build());
 
         classpathBuilder.addLibrary(mvn);

@@ -65,7 +65,11 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
      */
     @Override
     public void onDisable() {
-        disable();
+        try {
+            disable();
+        } catch (Exception e) {
+            log().error("An error occurred while unloading {}", getName(), e);
+        }
     }
 
     /**
@@ -76,5 +80,5 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     /**
      * Code that executed on shutdown
      */
-    protected abstract void disable();
+    protected abstract void disable() throws Exception;
 }
