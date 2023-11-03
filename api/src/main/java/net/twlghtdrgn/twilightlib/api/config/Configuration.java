@@ -8,6 +8,8 @@ import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A configuration file wrapper.
@@ -35,10 +37,30 @@ public class Configuration<T> {
 
     public void reload() throws ConfigurateException {
         if (node != null && config != null) {
+            final CommentedConfigurationNode originalNode = node.copy();
+            final CommentedConfigurationNode fileNode = yamlLoader.load();
             node.set(clazz, config);
-            final CommentedConfigurationNode tempNode = node.copy();
-            node = yamlLoader.load();
-            node.mergeFrom(tempNode);
+
+            final CommentedConfigurationNode diff = yamlLoader.createNode();
+
+            if (!fileNode.equals(originalNode)) {
+                for (var map:fileNode.childrenMap().entrySet()) {
+                    if (fileNode.node(map.getKey()).equals(originalNode.node(map.getKey()))) continue;
+                    diff.node(map.getKey()).set(map.getValue());
+                }
+            }
+
+            if (!node.equals(originalNode)) {
+                for (var map:node.childrenMap().entrySet()) {
+                    if (node.node(map.getKey()).equals(originalNode.node(map.getKey()))) continue;
+                    diff.node(map.getKey()).set(map.getValue());
+                }
+            }
+
+            if (!diff.empty()) {
+                for (var map:diff.childrenMap().entrySet())
+                    node.node(map.getKey()).set(map.getValue());
+            }
         } else node = yamlLoader.load();
 
         config = node.get(clazz);
