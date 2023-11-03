@@ -1,6 +1,7 @@
 package net.twlghtdrgn.twilightlib.api.redis;
 
 import lombok.Data;
+import lombok.Getter;
 import net.twlghtdrgn.twilightlib.api.ILibrary;
 import net.twlghtdrgn.twilightlib.api.config.Configuration;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +27,8 @@ public class RedisConnector {
     private static JedisPool jedisPool;
     private static ILibrary library;
     private static Configuration<RedisConfig> redisConfig;
+    @Getter
+    private static boolean enabled;
     public static void initJedis(ILibrary lib) throws ConfigurateException, IllegalStateException {
         library = lib;
 
@@ -63,6 +66,7 @@ public class RedisConnector {
         library.log().info("Testing Redis connection...");
         try (Jedis jedis = getResource()) {
             library.log().info("Redis connection: OK");
+            enabled = true;
         } catch (JedisConnectionException e) {
             library.log().error("Unable to connect. Is credentials are wrong?", e);
             throw new IllegalStateException("Redis cannot be loaded");
@@ -75,11 +79,12 @@ public class RedisConnector {
      */
     @Nullable
     public static Jedis getResource() {
-        return jedisPool.getResource();
+        return jedisPool != null ? jedisPool.getResource() : null;
     }
 
     public static boolean sendMessage(final @NotNull String channel, final byte[] data) {
         try (Jedis jedis = getResource()) {
+            if (!enabled || jedis == null) return false;
             jedis.publish(channel.getBytes(), data);
             return true;
         } catch (Exception e) {
