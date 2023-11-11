@@ -1,11 +1,14 @@
 package net.twlghtdrgn.twilightlib.api.util;
 
+import io.github.miniplaceholders.api.MiniPlaceholders;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,19 +21,48 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class Format {
     private Format() {}
-    private static final String ERROR_AS_STRING = "parsing error";
-    private static final Component ERROR_AS_COMPONENT = parse("<red>" + ERROR_AS_STRING);
+    private static boolean isMiniPlaceholdersPresent;
+    static {
+        try {
+            Class.forName("io.github.miniplaceholders.api.MiniPlaceholders");
+            isMiniPlaceholdersPresent = true;
+        } catch (ClassNotFoundException ignored) {
+            isMiniPlaceholdersPresent = false;
+        }
+    }
+
+    /**
+     * Converts text to a component
+     * @param in a string to convert. If installed, {@link MiniPlaceholders} placeholders can be used
+     * @return a component
+     */
+    public static @NotNull Component parse(@NotNull String in) {
+        if (in.contains("§") || in.contains("&")) in = fromLegacy(in);
+
+        if (isMiniPlaceholdersPresent) {
+            return MiniMessage.miniMessage().deserialize(in, MiniPlaceholders.getGlobalPlaceholders())
+                    .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        } else {
+            return MiniMessage.miniMessage().deserialize(in)
+                    .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        }
+    }
 
     /**
      * Converts text to a component
      * @param in a string to convert
+     * @param audience an audience for {@link MiniPlaceholders}. If you don't have it installed, then use parse(String)
      * @return a component
      */
-    @NotNull
-    public static Component parse(@NotNull String in) {
+    public static @NotNull Component parse(@NotNull String in, @Nullable Audience audience) {
         if (in.contains("§") || in.contains("&")) in = fromLegacy(in);
-        return MiniMessage.miniMessage().deserializeOr(in, ERROR_AS_COMPONENT)
-                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+
+        if (isMiniPlaceholdersPresent && audience != null) {
+            return MiniMessage.miniMessage().deserialize(in, MiniPlaceholders.getAudiencePlaceholders(audience))
+                    .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        } else {
+            return parse(in);
+        }
     }
 
     /**
@@ -38,8 +70,8 @@ public class Format {
      * @param component a component to convert
      * @return a regular string without any formatting
      */
-    public static String parse(Component component) {
-        return PlainTextComponentSerializer.plainText().serializeOr(component,ERROR_AS_STRING);
+    public static @NotNull String parse(Component component) {
+        return PlainTextComponentSerializer.plainText().serialize(component);
     }
 
     /**
@@ -47,10 +79,9 @@ public class Format {
      * @param string a string to convert
      * @return a JSON-component
      */
-    @NotNull
-    public static Component gson(@NotNull String string) {
+    public static @NotNull Component gson(@NotNull String string) {
         if (string.contains("§") || string.contains("&")) string = fromLegacy(string);
-        return GsonComponentSerializer.gson().deserializeOr(string, ERROR_AS_COMPONENT)
+        return GsonComponentSerializer.gson().deserialize(string)
                 .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
