@@ -58,7 +58,10 @@ public class Format {
         if (in.contains("§") || in.contains("&")) in = fromLegacy(in);
 
         if (isMiniPlaceholdersPresent && audience != null) {
-            return MiniMessage.miniMessage().deserialize(in, MiniPlaceholders.getAudiencePlaceholders(audience))
+            return MiniMessage.miniMessage().deserialize(in,
+                            MiniPlaceholders.getGlobalPlaceholders(),
+                            MiniPlaceholders.getAudienceGlobalPlaceholders(audience),
+                            MiniPlaceholders.getAudiencePlaceholders(audience))
                     .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
         } else {
             return parse(in);

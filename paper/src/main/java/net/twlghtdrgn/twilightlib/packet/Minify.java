@@ -6,6 +6,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import lombok.Data;
 import net.twlghtdrgn.twilightlib.LibraryPermission;
 import net.twlghtdrgn.twilightlib.TwilightLib;
 import net.twlghtdrgn.twilightlib.TwilightPlugin;
@@ -31,96 +32,99 @@ public class Minify {
         listenActionbar();
         listenInventory();
         listenTitle();
-        listenBossbar();
-        listenScoreboard();
+//        listenBossbar();
+//        listenScoreboard();
 
         listenAnvil();
     }
 
     private void listenChat() {
-        if (!cfg.get().chat) return;
+        if (!cfg.get().isChat()) return;
         api.addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.SYSTEM_CHAT) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 final PacketContainer container = event.getPacket();
+                Player player = event.getPlayer();
                 final boolean isLegacyActionbar = container.getBooleans().read(0);
                 Object unknown;
-                if (isLegacyActionbar && cfg.get().actionBar) {
+                if (isLegacyActionbar && cfg.get().isActionBar()) {
                     unknown = container.getModifier().read(1);
-                    container.getModifier().write(1, ComponentUtil.convert(unknown));
+                    container.getModifier().write(1, ComponentUtil.convert(unknown, player));
                 } else {
                     unknown = container.getModifier().read(0);
-                    container.getModifier().write(0, ComponentUtil.convert(unknown));
+                    container.getModifier().write(0, ComponentUtil.convert(unknown, player));
                 }
             }
         });
     }
 
     private void listenActionbar() {
-        if (!cfg.get().actionBar) return;
+        if (!cfg.get().isActionBar()) return;
         api.addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.SET_ACTION_BAR_TEXT) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 final PacketContainer container = event.getPacket();
+                Player player = event.getPlayer();
                 Object unknown = container.getModifier().read(0);
-                if (unknown == null) System.out.println("NULL!! 62");
-                container.getModifier().write(0, ComponentUtil.convert(unknown));
+                container.getModifier().write(0, ComponentUtil.convert(unknown, player));
             }
         });
     }
 
     private void listenInventory() {
-        if (!cfg.get().inventory) return;
+        if (!cfg.get().isInventory()) return;
         api.addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.OPEN_WINDOW) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 final PacketContainer container = event.getPacket();
+                Player player = event.getPlayer();
                 Object unknown = container.getModifier().read(2);
-                if (unknown == null) System.out.println("NULL!! 76");
-                container.getModifier().write(2, ComponentUtil.convert(unknown));
+                container.getModifier().write(2, ComponentUtil.convert(unknown, player));
             }
         });
     }
 
     private void listenTitle() {
-        if (!cfg.get().title) return;
+        if (!cfg.get().isTitle()) return;
         api.addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.SET_TITLE_TEXT) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 PacketContainer container = event.getPacket();
+                Player player = event.getPlayer();
                 Object unknown = container.getModifier().read(0);
-                if (unknown == null) System.out.println("NULL!! 89");
-                container.getModifier().write(0, ComponentUtil.convert(unknown));
+                container.getModifier().write(0, ComponentUtil.convert(unknown, player));
             }
         });
         api.addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.SET_SUBTITLE_TEXT) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 PacketContainer container = event.getPacket();
+                Player player = event.getPlayer();
                 Object unknown = container.getModifier().read(0);
-                if (unknown == null) System.out.println("NULL!! 98");
-                container.getModifier().write(0, ComponentUtil.convert(unknown));
+                container.getModifier().write(0, ComponentUtil.convert(unknown, player));
             }
         });
     }
 
-    private void listenBossbar() {
-        if (!cfg.get().bossbar) return; // TODO
-        api.addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.BOSS) {
-            @Override
-            public void onPacketSending(PacketEvent event) {
-                PacketContainer container = event.getPacket();
-
-                for (Object o:container.getBooleans().getValues())
-                    System.out.println(o);
-            }
-        });
-    }
-
-    private void listenScoreboard() {
-        if (!cfg.get().scoreboard) return; // TODO
-
-    }
+//    private void listenBossbar() {
+//        if (!cfg.get().isBossbar()) return; // TODO
+//        api.addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.BOSS) {
+//            @Override
+//            public void onPacketSending(PacketEvent event) {
+//                PacketContainer container = event.getPacket();
+//                Player player = event.getPlayer();
+//                for (Object o:container.getChatComponents().getValues()) {
+//                    System.out.println(o.getClass().getCanonicalName());
+//                }
+//
+//            }
+//        });
+//    }
+//
+//    private void listenScoreboard() {
+//        if (!cfg.get().isScoreboard()) return; // TODO
+//
+//    }
 
     private void listenAnvil() {
         if (!cfg.get().disallowMinimessageAnvil) return;
@@ -138,14 +142,15 @@ public class Minify {
         });
     }
 
+    @Data
     @ConfigSerializable
     protected static class Config {
         private boolean chat = false;
         private boolean actionBar = false;
         private boolean inventory = false;
         private boolean title = false;
-        private boolean bossbar = false; // TODO
-        private boolean scoreboard = false; // TODO
+//        private boolean bossbar = false; // TODO
+//        private boolean scoreboard = false; // TODO
 
         private boolean disallowMinimessageAnvil = true;
     }
