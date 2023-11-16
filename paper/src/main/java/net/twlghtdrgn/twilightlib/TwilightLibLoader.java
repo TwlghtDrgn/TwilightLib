@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Loader class that downloads all libraries required for internal use
  */
+@SuppressWarnings("UnstableApiUsage")
 public class TwilightLibLoader implements PluginLoader {
     @Override
     public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {

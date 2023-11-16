@@ -19,7 +19,7 @@ import java.sql.SQLException;
  * @since 0.0.1
  */
 @SuppressWarnings("unused")
-public class HikariConnector implements SQL {
+public class HikariConnector implements IConnector {
     private final HikariDataSource dataSource;
     private final Configuration<MariaDBConfig> sqlConfig;
     private final ILibrary library;
