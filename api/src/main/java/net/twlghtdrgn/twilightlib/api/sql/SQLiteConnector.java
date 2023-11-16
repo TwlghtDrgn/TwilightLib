@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * @since 0.0.1
  */
 @SuppressWarnings("unused")
-public class SQLiteConnector implements SQL {
+public class SQLiteConnector implements IConnector {
     private final ILibrary library;
     public SQLiteConnector(@NotNull ILibrary library) throws ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");

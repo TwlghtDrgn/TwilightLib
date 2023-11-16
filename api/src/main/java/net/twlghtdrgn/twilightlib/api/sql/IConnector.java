@@ -10,7 +10,7 @@ import java.sql.SQLException;
  * @author TwlghtDrgn
  * @since 0.0.1
  */
-public interface SQL {
+public interface IConnector {
     @Nullable
     Connection getConnection() throws SQLException;
 }
