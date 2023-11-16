@@ -5,6 +5,7 @@ import net.twlghtdrgn.twilightlib.api.database.annotation.*;
 import net.twlghtdrgn.twilightlib.api.sql.HikariConnector;
 import net.twlghtdrgn.twilightlib.api.sql.IConnector;
 import net.twlghtdrgn.twilightlib.api.sql.SQLiteConnector;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurateException;
@@ -14,6 +15,8 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 
+@SuppressWarnings({"unused", "java:S3776", "java:S3011"})
+@ApiStatus.Experimental
 public class Database implements IDatabase {
     private final IConnector connector;
     private final ILibrary library;
