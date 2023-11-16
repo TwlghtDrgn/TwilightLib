@@ -7,6 +7,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import lombok.Data;
+import net.minecraft.network.protocol.game.PacketPlayOutBoss;
 import net.twlghtdrgn.twilightlib.LibraryPermission;
 import net.twlghtdrgn.twilightlib.TwilightLib;
 import net.twlghtdrgn.twilightlib.TwilightPlugin;
@@ -32,8 +33,6 @@ public class Minify {
         listenActionbar();
         listenInventory();
         listenTitle();
-//        listenBossbar();
-//        listenScoreboard();
 
         listenAnvil();
     }
@@ -106,26 +105,6 @@ public class Minify {
         });
     }
 
-//    private void listenBossbar() {
-//        if (!cfg.get().isBossbar()) return; // TODO
-//        api.addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.BOSS) {
-//            @Override
-//            public void onPacketSending(PacketEvent event) {
-//                PacketContainer container = event.getPacket();
-//                Player player = event.getPlayer();
-//                for (Object o:container.getChatComponents().getValues()) {
-//                    System.out.println(o.getClass().getCanonicalName());
-//                }
-//
-//            }
-//        });
-//    }
-//
-//    private void listenScoreboard() {
-//        if (!cfg.get().isScoreboard()) return; // TODO
-//
-//    }
-
     private void listenAnvil() {
         if (!cfg.get().disallowMinimessageAnvil) return;
         api.addPacketListener(new PacketAdapter(plugin, PacketType.Play.Client.ITEM_NAME) {
@@ -149,8 +128,6 @@ public class Minify {
         private boolean actionBar = false;
         private boolean inventory = false;
         private boolean title = false;
-//        private boolean bossbar = false; // TODO
-//        private boolean scoreboard = false; // TODO
 
         private boolean disallowMinimessageAnvil = true;
     }
