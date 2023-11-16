@@ -7,7 +7,6 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import lombok.Data;
-import net.minecraft.network.protocol.game.PacketPlayOutBoss;
 import net.twlghtdrgn.twilightlib.LibraryPermission;
 import net.twlghtdrgn.twilightlib.TwilightLib;
 import net.twlghtdrgn.twilightlib.TwilightPlugin;
