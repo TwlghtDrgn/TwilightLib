@@ -43,7 +43,7 @@ public class ItemBuilder {
         this.itemStack = itemStack;
         this.itemMeta = itemStack.getItemMeta();
         this.name = itemMeta.hasDisplayName() ? itemMeta.displayName() : null;
-        this.description = itemMeta.hasLore() ? itemMeta.lore() : new ArrayList<>();
+        this.description = new ArrayList<>();
     }
 
     /**
@@ -151,10 +151,12 @@ public class ItemBuilder {
      */
     public ItemStack build() {
         if (name != null) itemMeta.displayName(name);
-        if (replaceLore && itemMeta.hasLore()) {
-            final List<Component> lore = new ArrayList<>(itemMeta.lore());
-            lore.addAll(description);
-            itemMeta.lore(lore);
+        if (itemMeta.hasLore()) {
+            if (!replaceLore) {
+                final List<Component> lore = new ArrayList<>(itemMeta.lore());
+                lore.addAll(description);
+                itemMeta.lore(lore);
+            } else itemMeta.lore(description);
         } else itemMeta.lore(description);
         itemStack.setItemMeta(itemMeta);
         return this.itemStack;
