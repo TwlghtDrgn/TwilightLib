@@ -1,5 +1,6 @@
 package net.twlghtdrgn.twilightlib.api.database;
 
+import lombok.Getter;
 import net.twlghtdrgn.twilightlib.api.ILibrary;
 import net.twlghtdrgn.twilightlib.api.database.annotation.*;
 import net.twlghtdrgn.twilightlib.api.sql.HikariConnector;
@@ -18,6 +19,7 @@ import java.util.*;
 @SuppressWarnings({"unused", "java:S3776", "java:S3011"})
 @ApiStatus.Experimental
 public class Database implements IDatabase {
+    @Getter
     private final IConnector connector;
     private final ILibrary library;
     private final boolean useMariaDB;
@@ -71,7 +73,7 @@ public class Database implements IDatabase {
             }
         } catch (SQLException e) {
             library.log().error("Unable to fetch a table {}: {}", table.getSimpleName().toLowerCase(), e.getMessage(), e);
-            return null;
+            return List.of();
         }
     }
 
