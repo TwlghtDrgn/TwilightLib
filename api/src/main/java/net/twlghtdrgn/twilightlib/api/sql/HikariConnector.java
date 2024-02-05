@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -51,7 +52,7 @@ public class HikariConnector implements IConnector {
         try (Connection conn = getConnection()) {
             library.log().info("Database connection: OK");
         } catch (SQLException e) {
-            library.log().error("Unable to connect. Is credentials are wrong?", e);
+            library.log().error("Unable to connect. Is credentials wrong?", e);
             throw new IllegalStateException("MariaDB cannot be loaded");
         }
     }
@@ -66,25 +67,19 @@ public class HikariConnector implements IConnector {
         return this.dataSource.getConnection();
     }
 
-    public void close() throws IOException {
-        this.dataSource.close();
+    @Override
+    public void shutdown() {
+        library.log().info("Shutting down MariaDB");
+        if (dataSource != null) dataSource.close();
     }
-
 
     @Data
     @ConfigSerializable
     protected static class MariaDBConfig {
         private String hostname = "127.0.0.1";
         private String port = "3306";
-        private String database = "ChangeMe";
-        private String user = "admin";
-        private String password = "password";
-    }
-
-
-    public void shutdown() {
-        library.log().info("Shutting down MariaDB");
-        if (dataSource != null)
-            dataSource.close();
+        private String database = "minecraft";
+        private String user = "minecraft";
+        private String password = "p@ssw0rd";
     }
 }

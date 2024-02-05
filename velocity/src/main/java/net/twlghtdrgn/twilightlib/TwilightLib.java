@@ -37,7 +37,7 @@ public class TwilightLib implements ILibrary {
 
     @Inject
     public TwilightLib(@NotNull Logger logger, @NotNull ProxyServer server, @DataDirectory Path path) {
-        pluginInfo = new PluginInfoProvider(LibraryInfo.NAME,
+        pluginInfo = new PluginInfoProvider("TwilightLib: Velocity Edition",
                 LibraryInfo.VERSION,
                 server.getVersion().getName() + " " + server.getVersion().getVersion(),
                 LibraryInfo.URL);
@@ -59,7 +59,7 @@ public class TwilightLib implements ILibrary {
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event) {
         try {
-            RedisConnector.close();
+            RedisConnector.shutdown();
         } catch (IOException e) {
             log().error("Unable to unload Redis", e);
         }

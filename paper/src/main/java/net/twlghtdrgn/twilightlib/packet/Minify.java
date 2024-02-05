@@ -14,9 +14,11 @@ import net.twlghtdrgn.twilightlib.api.config.Configuration;
 import net.twlghtdrgn.twilightlib.util.ComponentUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
+@ApiStatus.Experimental
 public class Minify {
     private final TwilightPlugin plugin;
     private ProtocolManager api;

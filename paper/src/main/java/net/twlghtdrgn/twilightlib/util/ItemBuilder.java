@@ -42,7 +42,7 @@ public class ItemBuilder {
     public ItemBuilder(@NotNull ItemStack itemStack) {
         this.itemStack = itemStack;
         this.itemMeta = itemStack.getItemMeta();
-        this.name = itemMeta.hasDisplayName() ? itemMeta.displayName() : null;
+        this.name = null;
         this.description = new ArrayList<>();
     }
 
@@ -131,7 +131,7 @@ public class ItemBuilder {
      * Sets the name of an item
      */
     public ItemBuilder setName(String name) {
-        itemMeta.displayName(Format.parse(name));
+        this.name = Format.parse(name);
         return this;
     }
 

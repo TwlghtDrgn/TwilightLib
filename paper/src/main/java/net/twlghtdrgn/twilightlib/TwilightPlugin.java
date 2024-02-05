@@ -40,7 +40,7 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
 
 
     /**
-     * !!DO NOT OVERRIDE IT!!
+     * Internal usage
      */
     @Override
     public void onEnable() {
@@ -61,7 +61,7 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     }
 
     /**
-     * !!DO NOT OVERRIDE IT!!
+     * Internal usage
      */
     @Override
     public void onDisable() {

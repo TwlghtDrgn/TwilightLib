@@ -1,5 +1,6 @@
 package net.twlghtdrgn.twilightlib.api.config;
 
+import lombok.Setter;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -82,6 +83,7 @@ public class ConfigBuilder {
 
     public static class Row {
         private Object[] name;
+        @Setter
         private Object val;
         public Object[] getName() {
             return name;
@@ -91,9 +93,6 @@ public class ConfigBuilder {
         }
         public Object getVal() {
             return val;
-        }
-        public void setVal(Object val) {
-            this.val = val;
         }
     }
 

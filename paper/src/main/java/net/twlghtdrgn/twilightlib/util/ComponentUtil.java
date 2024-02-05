@@ -9,16 +9,17 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.chat.contents.*;
 import net.twlghtdrgn.twilightlib.api.util.Format;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiStatus.Experimental
 public class ComponentUtil {
     private ComponentUtil() {}
 
@@ -29,8 +30,7 @@ public class ComponentUtil {
         else if (object instanceof String string) {
             String extracted = new Gson().fromJson(string, Actionbar.class).text;
             return GsonComponentSerializer.gson().serialize(Format.parse(extracted, audience));
-        }
-        else return object;
+        } else return object;
     }
 
     public static IChatBaseComponent nmsToAdventureJson(IChatBaseComponent baseComponent, Audience audience) {
@@ -46,7 +46,7 @@ public class ComponentUtil {
         } else if (contents instanceof LiteralContents literalContents) {
             adventureComponent = Format.parse(literalContents.a(), audience);
         }
-        // TODO: NbtContents:
+        // TODO: make NbtContents work
         //        } else if (cc instanceof NbtContents nbt) {
         //     if (nbt.c().isPresent()) {
         //        adventureComponent = Component.blockNBT(nbt.a(), nbt.b(), Component.text(((LiteralContents) nbt.c().get().b()).a()), nbt.d(), nbt.d().);

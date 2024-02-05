@@ -26,40 +26,43 @@ public class RedisConnector {
     private RedisConnector() {}
     private static JedisPool jedisPool;
     private static ILibrary library;
-    private static Configuration<RedisConfig> redisConfig;
+    private static Configuration<RedisConfig> cfg;
     @Getter
     private static boolean enabled;
     public static void initJedis(ILibrary lib) throws ConfigurateException, IllegalStateException {
         library = lib;
 
-        redisConfig = new Configuration<>(library, RedisConfig.class, "redis");
-        redisConfig.reload();
-        if (!redisConfig.get().isJedisEnabled()) {
+        cfg = new Configuration<>(library, RedisConfig.class, "redis");
+        cfg.reload();
+        if (!cfg.get().isJedisEnabled()) {
             library.log().info("Redis is disabled in the library configuration, skipping..");
             return;
         } else library.log().info("Redis is enabled in the library configuration, loading..");
 
-        String host = redisConfig.get().getHostname();
-        String user = redisConfig.get().getUser();
-        String password = redisConfig.get().getPassword();
-        int port = redisConfig.get().getPort();
+        String host = cfg.get().getHostname();
+        String user = cfg.get().getUser();
+        String password = cfg.get().getPassword();
+        int port = cfg.get().getPort();
 
         JedisPoolConfig poolConfig = new JedisPoolConfig();
 
-        poolConfig.setMaxTotal(128);
-        poolConfig.setMaxIdle(128);
-        poolConfig.setMinIdle(16);
+        poolConfig.setMinIdle(cfg.get().getAdvanced().getMinIdle());
+        poolConfig.setMaxIdle(cfg.get().getAdvanced().getMaxIdle());
+        poolConfig.setMaxTotal(cfg.get().getAdvanced().getMaxTotal());
+
         poolConfig.setTestOnBorrow(true);
         poolConfig.setTestOnReturn(true);
         poolConfig.setTestWhileIdle(true);
-        poolConfig.setSoftMinEvictableIdleTime(Duration.ofSeconds(60));
+
+        poolConfig.setSoftMinEvictableIdleDuration(Duration.ofSeconds(60));
         poolConfig.setTimeBetweenEvictionRuns(Duration.ofSeconds(60));
         poolConfig.setNumTestsPerEvictionRun(3);
+
         poolConfig.setBlockWhenExhausted(true);
 
-        if (user.length() == 0) {
+        if (user.isEmpty()) {
             jedisPool = new JedisPool(poolConfig, host, port);
-        } else if (password.length() == 0) {
+        } else if (password.isEmpty()) {
             jedisPool = new JedisPool(poolConfig, host, port, user, null);
         } else jedisPool = new JedisPool(poolConfig, host, port, user, password);
 
@@ -82,6 +85,12 @@ public class RedisConnector {
         return jedisPool != null ? jedisPool.getResource() : null;
     }
 
+    /**
+     * Used to send a Redis messages
+     * @param channel a channel of the message
+     * @param data a message data
+     * @return true if message was sent successfully
+     */
     public static boolean sendMessage(final @NotNull String channel, final byte[] data) {
         try (Jedis jedis = getResource()) {
             if (!enabled || jedis == null) return false;
@@ -93,12 +102,18 @@ public class RedisConnector {
         }
     }
 
-    public static void close() throws IOException {
-        if (!redisConfig.get().isJedisEnabled()) return;
+    /**
+     * Shuts down a Jedis pool
+     */
+    public static void shutdown() throws IOException {
+        if (!cfg.get().isJedisEnabled()) return;
         library.log().info("Shutting down Redis");
-        jedisPool.close();
+        if (jedisPool != null) jedisPool.close();
     }
 
+    /**
+     * A jedis configuration file
+     */
     @Data
     @ConfigSerializable
     protected static class RedisConfig {
@@ -107,5 +122,15 @@ public class RedisConnector {
         private String user = "";
         private String password = "";
         private int port = 6379;
+
+        private final Advanced advanced = new Advanced();
+
+        @Data
+        @ConfigSerializable
+        public static class Advanced {
+            private int minIdle = 16;
+            private int maxIdle = 128;
+            private int maxTotal = 128;
+        }
     }
 }

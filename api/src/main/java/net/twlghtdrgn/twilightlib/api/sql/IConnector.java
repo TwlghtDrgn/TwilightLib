@@ -13,4 +13,5 @@ import java.sql.SQLException;
 public interface IConnector {
     @Nullable
     Connection getConnection() throws SQLException;
+    default void shutdown() throws Exception {}
 }
