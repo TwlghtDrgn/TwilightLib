@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 @Getter
 @Setter
 @SuppressWarnings("unused")
@@ -34,7 +36,7 @@ public class CallbackEvent extends Event implements Cancellable {
     /**
      * Callback data, which contains a payload for the plugin listening on this event
      */
-    private final String[] data;
+    private final List<String> data;
     private boolean cancelled;
 
     /**
