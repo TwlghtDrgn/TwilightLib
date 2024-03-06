@@ -3,7 +3,7 @@ package net.twlghtdrgn.twilightlib;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
-public final class LibraryVersion {
+public class LibraryVersion {
     private LibraryVersion() {}
 
     public static final String VERSION = "${project.version}";

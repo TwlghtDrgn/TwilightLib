@@ -9,8 +9,6 @@ import java.nio.file.Path;
 
 /**
  * A main interface of the Library
- * Implement this if you are using Velocity
- * Extend TwilightPlugin from a package "TwilightLib-Paper" if your plugin is intended to work on Paper
  * @author TwlghtDrgn
  * @since 0.0.19-SNAPSHOT
  */
@@ -24,7 +22,7 @@ public interface ILibrary {
     ConfigLoader getConfigLoader();
 
     /**
-     * A plugin folder
+     * A plugin data folder
      */
     Path getPath();
 

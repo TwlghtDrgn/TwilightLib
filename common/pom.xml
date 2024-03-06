@@ -10,7 +10,7 @@
         <version>0.23.1</version>
     </parent>
 
-    <artifactId>TwilightLib-API</artifactId>
+    <artifactId>TwilightLib-Common</artifactId>
     <packaging>jar</packaging>
 
     <build>

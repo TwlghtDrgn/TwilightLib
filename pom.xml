@@ -16,22 +16,24 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <configurate.version>4.2.0-SNAPSHOT</configurate.version>
         <jedis.version>5.1.0</jedis.version>
-        <persistence.version>2.2</persistence.version>
-        <hikaricp.version>5.1.0</hikaricp.version>
+
         <h2.version>2.2.220</h2.version>
-        <mariadb.version>3.3.2</mariadb.version>
         <postgresql.version>42.7.1</postgresql.version>
+        <mariadb.version>3.3.2</mariadb.version>
+
+        <hikaricp.version>5.1.0</hikaricp.version>
         <ormlite.version>6.1</ormlite.version>
         <flyway.version>10.4.1</flyway.version>
+
         <adventure.version>4.14.0</adventure.version>
-        <configurate.version>4.2.0-SNAPSHOT</configurate.version>
     </properties>
 
     <url>https://github.com/TwlghtDrgn/TwilightLib</url>
 
     <modules>
-        <module>api</module>
+        <module>common</module>
         <module>paper</module>
         <module>velocity</module>
     </modules>
@@ -70,7 +72,27 @@
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.1.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <distributionManagement>
         <repository>

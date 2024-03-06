@@ -34,7 +34,7 @@ public class CallbackEvent extends Event implements Cancellable {
     /**
      * Callback data, which contains a payload for the plugin listening on this event
      */
-    private final String data;
+    private final String[] data;
     private boolean cancelled;
 
     /**
@@ -70,7 +70,7 @@ public class CallbackEvent extends Event implements Cancellable {
 
         public String build() {
             if (plugin == null || channel == null || channel.isEmpty())
-                throw new IllegalArgumentException("You should set all builder values for CallbackBuilder to work");
+                throw new IllegalArgumentException("You should set all builder values for the CallbackBuilder to work");
             return String.format("%s %s:%s", CALLBACK_COMMAND, plugin.getName(), channel);
         }
     }

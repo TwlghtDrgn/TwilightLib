@@ -85,7 +85,7 @@
     <dependencies>
         <dependency>
             <groupId>net.twlghtdrgn</groupId>
-            <artifactId>TwilightLib-API</artifactId>
+            <artifactId>TwilightLib-Common</artifactId>
             <version>0.23.1</version>
             <scope>compile</scope>
         </dependency>

@@ -1,9 +1,8 @@
 package net.twlghtdrgn.twilightlib;
 
 import lombok.Getter;
-import net.twlghtdrgn.twilightlib.api.ILibrary;
-import net.twlghtdrgn.twilightlib.api.config.ConfigLoader;
-import net.twlghtdrgn.twilightlib.api.util.PluginInfoProvider;
+import net.twlghtdrgn.twilightlib.config.ConfigLoader;
+import net.twlghtdrgn.twilightlib.util.PluginInfoProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
@@ -11,9 +10,9 @@ import org.slf4j.Logger;
 import java.nio.file.Path;
 
 /**
- * An abstract library class
- * Extend it if you are using Paper
- * For Velocity you should use "TwilightLib-API"
+ * An abstract plugin class
+ * @see JavaPlugin
+ * @see ILibrary
  */
 @Getter
 @SuppressWarnings("UnstableApiUsage")
@@ -22,8 +21,7 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     private PluginInfoProvider pluginInfo;
 
     /**
-     * An SLF4J logger
-     * @return {@link Logger}
+     * @see ILibrary
      */
     @Override
     public Logger log() {
@@ -31,7 +29,7 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     }
 
     /**
-     * A plugin directory
+     * @see ILibrary
      */
     @Override
     public Path getPath() {
@@ -46,8 +44,7 @@ public abstract class TwilightPlugin extends JavaPlugin implements ILibrary {
     public void onEnable() {
         pluginInfo = new PluginInfoProvider(getPluginMeta().getName(),
                 getPluginMeta().getVersion(),
-                getServer().getVersion(),
-                getPluginMeta().getWebsite());
+                getServer().getVersion());
         configLoader = new ConfigLoader(this);
 
         log().info(pluginInfo.getStartupMessage());

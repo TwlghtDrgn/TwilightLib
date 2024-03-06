@@ -3,7 +3,6 @@ package net.twlghtdrgn.twilightlib.util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.twlghtdrgn.twilightlib.api.util.Format;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * A builder for the items
@@ -21,127 +21,152 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class ItemBuilder {
-    private Component name;
-    private final List<Component> description;
-    private boolean replaceLore;
     private final ItemStack itemStack;
-    private final ItemMeta itemMeta;
+    private Component itemName;
+    private final List<Component> itemLore = new ArrayList<>();
+    private boolean replaceLore = false;
 
     /**
-     * Builds an item using {@link Material}
+     * Build an item using {@link Material}
      * @param material material of an item
+     * @see ItemBuilder#ItemBuilder(ItemStack)
      */
     public ItemBuilder(Material material) {
         this(new ItemStack(material));
     }
 
     /**
-     * Builds an item using {@link ItemStack}
-     * @param itemStack ItemStack of an item
+     * Build an item using {@link ItemStack}
+     * @param itemStack an item
+     * @see ItemBuilder#ItemBuilder(Material)
      */
-    public ItemBuilder(@NotNull ItemStack itemStack) {
+    public ItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
-        this.itemMeta = itemStack.getItemMeta();
-        this.name = null;
-        this.description = new ArrayList<>();
     }
 
     /**
-     * Builds an item using {@link Material}
-     * @param material material of an item
-     * @param name name of the item. Uses MiniMessage formatting
+     * Set an amount
+     * @param amount of items this {@link ItemStack} will hold
+     * @see ItemBuilder#amount(int, boolean)
      */
-    public ItemBuilder(Material material, String name) {
-        this(new ItemStack(material), name);
-    }
-
-    /**
-     * Builds an item using {@link ItemStack}
-     * @param itemStack ItemStack of an item
-     * @param name name of the item. Uses MiniMessage formatting
-     */
-    public ItemBuilder(@NotNull ItemStack itemStack, String name) {
-        this.itemStack = itemStack;
-        this.itemMeta = itemStack.getItemMeta();
-        this.name = Format.parse(name);
-        this.description = new ArrayList<>();
-    }
-
-    /**
-     * Builds an item using {@link Material}
-     * @param material material of an item
-     * @param name name of the item. Uses MiniMessage formatting
-     * @param description A lore of the item
-     */
-    public ItemBuilder(Material material, String name, @NotNull String description) {
-        this(new ItemStack(material), name, description);
-    }
-
-    /**
-     * Builds an item using {@link ItemStack}
-     * @param itemStack ItemStack of an item
-     * @param name name of the item. Uses MiniMessage formatting
-     * @param description A lore of the item
-     */
-    public ItemBuilder(@NotNull ItemStack itemStack, String name, @NotNull String description) {
-        this.itemStack = itemStack;
-        this.itemMeta = itemStack.getItemMeta();
-        this.name = Format.parse(name);
-        this.description = Arrays.stream(description.split("<newline>"))
-                .map(Format::parse).toList();
-    }
-
-    /**
-     * Sets an amount of items in the stack
-     * @param amount an amount of items that will this item contain
-     */
-    public ItemBuilder setAmount(int amount) {
-        if (amount <= 0) itemStack.setAmount(1);
-        else itemStack.setAmount(Math.min(amount, 64));
+    public ItemBuilder amount(int amount) {
+        amount(amount, false);
         return this;
     }
 
     /**
-     * Should we replace the lore, or not
+     * Set an amount
+     * @param amount of items this {@link ItemStack} will hold
+     * @param oversized set to true, if you want to hold more than 64 items
+     * @see ItemBuilder#amount(int)
      */
-    public ItemBuilder replaceLore(boolean value) {
-        replaceLore = value;
+    public ItemBuilder amount(int amount, boolean oversized) {
+        if (amount <= 0) {
+            this.itemStack.setAmount(1);
+            return this;
+        }
+
+        if (oversized) {
+            this.itemStack.setAmount(amount);
+        } else {
+            this.itemStack.setAmount(Math.min(amount, 64));
+        }
+
         return this;
     }
 
+
     /**
-     * Adds a list of enchantments to the item.
-     * @param preparedEnchantments an array of {@link PreparedEnchantment}
+     * Add enchantments
+     * @param preparedEnchantments a list of {@link PreparedEnchantment}
      */
-    public ItemBuilder setEnchantments(PreparedEnchantment @NotNull ... preparedEnchantments) {
+    public ItemBuilder enchantments(PreparedEnchantment @NotNull ... preparedEnchantments) {
         for (PreparedEnchantment e:preparedEnchantments)
-            itemMeta.addEnchant(e.getEnchantment(), e.getLevel(), true);
+            meta().addEnchant(e.getEnchantment(), e.getLevel(), true);
         return this;
     }
 
     /**
-     * Adds a model to the item
+     * Set a model
      */
-    public ItemBuilder setModel(int modelID) {
-        itemMeta.setCustomModelData(modelID);
+    public ItemBuilder model(int customModelDataId) {
+        meta().setCustomModelData(customModelDataId);
         return this;
     }
 
     /**
-     * Sets the name of an item
+     * Set a new name for an item
+     * @see ItemBuilder#name(Component)
      */
-    public ItemBuilder setName(String name) {
-        this.name = Format.parse(name);
+    public ItemBuilder name(String itemName) {
+        this.itemName = Format.parse(itemName);
         return this;
     }
 
     /**
-     * Adds a description strings
+     * Set a new name for an item
+     * @see ItemBuilder#name(String)
      */
-    public ItemBuilder addLore(String @NotNull ... lore) {
-        description.addAll(new ArrayList<>(Arrays.stream(lore)
+    public ItemBuilder name(Component itemName) {
+        this.itemName = itemName;
+        return this;
+    }
+
+    /**
+     * Add a lore strings
+     * @see ItemBuilder#lore(boolean, Component...))
+     * @see ItemBuilder#lore(String)
+     * @see ItemBuilder#lore(Component)
+     */
+    public ItemBuilder lore(boolean isReplacement, String... lore) {
+        this.replaceLore = isReplacement;
+        this.itemLore.addAll(new ArrayList<>(Stream.of(lore)
                 .map(Format::parse)
                 .toList()));
+        return this;
+    }
+
+    /**
+     * Add a lore components
+     * @see ItemBuilder#lore(boolean, String...))
+     * @see ItemBuilder#lore(String)
+     * @see ItemBuilder#lore(Component)
+     */
+    public ItemBuilder lore(boolean isReplacement, Component... lore) {
+        this.replaceLore = isReplacement;
+        this.itemLore.addAll(new ArrayList<>(List.of(lore)));
+        return this;
+    }
+
+    /**
+     * Add a lore string
+     * @see ItemBuilder#lore(Component)
+     * @see ItemBuilder#lore(boolean, String...)
+     * @see ItemBuilder#lore(boolean, Component...)
+     */
+    public ItemBuilder lore(@NotNull String row) {
+        this.itemLore.add(Format.parse(row));
+        return this;
+    }
+
+    /**
+     * Add a lore component
+     * @see ItemBuilder#lore(String)
+     * @see ItemBuilder#lore(boolean, String...)
+     * @see ItemBuilder#lore(boolean, Component...)
+     */
+    public ItemBuilder lore(@NotNull Component row) {
+        this.itemLore.add(row);
+        return this;
+    }
+
+    /**
+     * Whether to replace lore, or not
+     * @see ItemBuilder#lore(boolean, String...)
+     * @see ItemBuilder#lore(boolean, Component...)
+     */
+    public ItemBuilder replaceLore(boolean value) {
+        this.replaceLore = value;
         return this;
     }
 
@@ -150,15 +175,17 @@ public class ItemBuilder {
      * @return a new {@link ItemStack}
      */
     public ItemStack build() {
-        if (name != null) itemMeta.displayName(name);
-        if (itemMeta.hasLore()) {
-            if (!replaceLore) {
-                final List<Component> lore = new ArrayList<>(itemMeta.lore());
-                lore.addAll(description);
-                itemMeta.lore(lore);
-            } else itemMeta.lore(description);
-        } else itemMeta.lore(description);
-        itemStack.setItemMeta(itemMeta);
+        if (this.itemName != null) meta().displayName(itemName);
+
+        if (!this.itemLore.isEmpty()) {
+            if (!this.replaceLore && this.meta().hasLore()) {
+                this.itemLore.addAll(0, meta().lore());
+                meta().lore(this.itemLore);
+            } else {
+                meta().lore(this.itemLore);
+            }
+        }
+
         return this.itemStack;
     }
 
@@ -170,5 +197,9 @@ public class ItemBuilder {
     public static class PreparedEnchantment {
         private Enchantment enchantment;
         private int level;
+    }
+
+    private ItemMeta meta() {
+        return itemStack.getItemMeta();
     }
 }

@@ -1,6 +1,6 @@
-name: TwilightLib
+name: TwilightLib-Paper
 version: '${project.version}'
-main: net.twlghtdrgn.twilightlib.TwilightLib
+main: net.twlghtdrgn.twilightlib.TwilightLibPaper
 api-version: '1.20'
 authors: [TwlghtDrgn]
 description: A library for TwlghtDrgn's plugins

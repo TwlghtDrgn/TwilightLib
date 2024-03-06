@@ -9,7 +9,7 @@ import org.eclipse.aether.repository.RemoteRepository;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Loader class that downloads all libraries required for internal use
+ * @see PluginLoader
  */
 @SuppressWarnings("UnstableApiUsage")
 public class TwilightLibLoader implements PluginLoader {
@@ -17,16 +17,21 @@ public class TwilightLibLoader implements PluginLoader {
     public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
         MavenLibraryResolver mvn = new MavenLibraryResolver();
 
-        mvn.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:5.0.1"), null));
-        mvn.addDependency(new Dependency(new DefaultArtifact("org.mariadb.jdbc:mariadb-java-client:3.1.2"), null));
-        mvn.addDependency(new Dependency(new DefaultArtifact("com.h2database:h2:2.2.220"), null));
-        mvn.addDependency(new Dependency(new DefaultArtifact("redis.clients:jedis:5.0.2"), null));
-        mvn.addDependency(new Dependency(new DefaultArtifact("com.j256.ormlite:ormlite-jdbc:6.1"), null));
-        mvn.addDependency(new Dependency(new DefaultArtifact("javax.persistence:javax.persistence-api:2.2"), null));
-        mvn.addDependency(new Dependency(new DefaultArtifact("org.flywaydb:flyway-core:10.4.1"), null));
-        mvn.addDependency(new Dependency(new DefaultArtifact("org.flywaydb:flyway-mysql:10.4.1"), null));
-        mvn.addDependency(new Dependency(new DefaultArtifact("org.flywaydb:flyway-database-postgresql:10.4.1"), null));
-        mvn.addDependency(new Dependency(new DefaultArtifact("org.postgresql:postgresql:42.7.1"), null));
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.CONFIGURATE.getGradleCoords()), null));
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.JEDIS.getGradleCoords()), null));
+
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.Database.Provider.H2.getArtifactId()), null));
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.Database.Provider.POSTGRESQL.getArtifactId()), null));
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.Database.Provider.MARIADB.getArtifactId()), null));
+
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.Database.Helper.HIKARICP.getGradleCoords()), null));
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.Database.Helper.ORMLITE.getGradleCoords()), null));
+
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.Database.Helper.Flyway.CORE.getGradleCoords()), null));
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.Database.Helper.Flyway.POSTGRESQL.getGradleCoords()), null));
+        mvn.addDependency(new Dependency(new DefaultArtifact(MavenDependency.Database.Helper.Flyway.MYSQL.getGradleCoords()), null));
+
+        mvn.addRepository((new RemoteRepository.Builder("twlghtdrgn-repo", "default", "https://maven.twlghtdrgn.net/repository/public/")).build());
         mvn.addRepository(new RemoteRepository.Builder("maven central","default","https://repo1.maven.org/maven2/").build());
 
         classpathBuilder.addLibrary(mvn);
