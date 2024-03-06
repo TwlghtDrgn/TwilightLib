@@ -9,11 +9,9 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
-import net.twlghtdrgn.twilightlib.api.ILibrary;
-import net.twlghtdrgn.twilightlib.api.LibraryInfo;
-import net.twlghtdrgn.twilightlib.api.config.ConfigLoader;
-import net.twlghtdrgn.twilightlib.api.redis.RedisConnector;
-import net.twlghtdrgn.twilightlib.api.util.PluginInfoProvider;
+import net.twlghtdrgn.twilightlib.config.ConfigLoader;
+import net.twlghtdrgn.twilightlib.redis.RedisConnector;
+import net.twlghtdrgn.twilightlib.util.PluginInfoProvider;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.spongepowered.configurate.ConfigurateException;
@@ -23,24 +21,23 @@ import java.nio.file.Path;
 
 @Plugin(
         id = "twilightlib",
-        name = LibraryInfo.NAME,
-        version = LibraryInfo.VERSION,
+        name = "TwilightLib-Velocity",
+        version = LibraryVersion.VERSION,
         authors = {"TwlghtDrgn"},
-        url = LibraryInfo.URL,
+        url = "https://github.com/TwlghtDrgn/TwilightLib",
         dependencies = {@Dependency(id = "miniplaceholders", optional = true)}
 )
-public class TwilightLib implements ILibrary {
+public class TwilightLibVelocity implements ILibrary {
     @Getter
     private final PluginInfoProvider pluginInfo;
     private final Logger logger;
     private final Path path;
 
     @Inject
-    public TwilightLib(@NotNull Logger logger, @NotNull ProxyServer server, @DataDirectory Path path) {
-        pluginInfo = new PluginInfoProvider("TwilightLib: Velocity Edition",
-                LibraryInfo.VERSION,
-                server.getVersion().getName() + " " + server.getVersion().getVersion(),
-                LibraryInfo.URL);
+    public TwilightLibVelocity(@NotNull Logger logger, @NotNull ProxyServer server, @DataDirectory Path path) {
+        pluginInfo = new PluginInfoProvider("TwilightLib-Velocity",
+                LibraryVersion.VERSION,
+                server.getVersion().getName() + " " + server.getVersion().getVersion());
         this.logger = logger;
         this.path = path;
 
